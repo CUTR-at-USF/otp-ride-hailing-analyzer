@@ -21,24 +21,27 @@
       </configuration>
     </facet>
   </component>
+  <component name="MavenCustomPomFilePath">
+    <option name="mavenPomFileUrl" value="file://$MODULE_DIR$/dependency-reduced-pom.xml" />
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_15">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
-    <content url="file://$MODULE_DIR$">
+    <content url="file://$MODULE_DIR$/src/main/java">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/src/main/resources">
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+    </content>
+    <content url="file://$MODULE_DIR$/src/test/java">
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.univocity:univocity-parsers:2.9.1" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.4.10" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.10" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10" level="project" />
+    <orderEntry type="library" exported="" name="com.univocity:univocity-parsers:2.9.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-test:1.4.10" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-test-common:1.4.10" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.4.30" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.30" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:13.0" level="project" />
   </component>
 </module>

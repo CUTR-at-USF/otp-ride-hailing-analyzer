@@ -9,8 +9,9 @@ import java.nio.charset.StandardCharsets;
 
 public class ProcessorMain {
     public static void main(String[] args) {
-
-        new CsvFileParser("gnss_log_2021_02_05_13_20_58.txt").parseFile();
+        CsvFileParser csvFileParser = new CsvFileParser("gnss_log_2021_02_05_13_20_58.txt");
+        csvFileParser.parseFile();
+        csvFileParser.printLocationData();
     }
 
 
