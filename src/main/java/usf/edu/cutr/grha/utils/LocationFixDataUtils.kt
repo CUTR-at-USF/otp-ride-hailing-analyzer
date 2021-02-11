@@ -6,7 +6,7 @@ import usf.edu.cutr.grha.model.LocationFixData
  * Utils class to interact with the LocationFixData model class
  */
 object LocationFixDataUtils {
-    val locationDataList: MutableList<LocationFixData> = mutableListOf()
+    private val locationDataList: MutableList<LocationFixData> = mutableListOf()
     @JvmStatic
      fun saveLocationData(rows: List<Array<String>>) {
          rows.forEach {
@@ -17,7 +17,7 @@ object LocationFixDataUtils {
                  )
                  locationDataList.add(locationFixData)
              }
-         };
+         }
     }
 
     @JvmStatic
