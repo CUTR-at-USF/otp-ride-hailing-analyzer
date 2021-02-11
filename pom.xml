@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>ctedd-export</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>gnss-ride-hailing-analyzer</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <build>
     <plugins>
         <plugin>
