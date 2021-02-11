@@ -1,12 +1,7 @@
 package usf.edu.cutr.grha.parsing;
 
-import com.univocity.parsers.annotations.FixedWidth;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import com.univocity.parsers.fixed.FixedWidthFields;
-import com.univocity.parsers.fixed.FixedWidthParser;
-import com.univocity.parsers.fixed.FixedWidthParserSettings;
-import com.univocity.parsers.fixed.FixedWidthRoutines;
 import usf.edu.cutr.grha.ProcessorMain;
 
 import java.io.Reader;
