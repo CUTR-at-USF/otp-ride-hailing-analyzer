@@ -42,7 +42,7 @@
           <shadedClassifierName>withAllDependencies</shadedClassifierName>
           <transformers>
             <transformer>
-              <mainClass>usf.edu.cutr.grha.ProcessorMain</mainClass>
+              <mainClass>edu.usf.cutr.grha.ProcessorMain</mainClass>
             </transformer>
             <transformer />
           </transformers>

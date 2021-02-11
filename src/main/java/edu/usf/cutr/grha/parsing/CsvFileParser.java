@@ -1,10 +1,10 @@
-package usf.edu.cutr.grha.parsing;
+package edu.usf.cutr.grha.parsing;
 
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import usf.edu.cutr.grha.ProcessorMain;
-import usf.edu.cutr.grha.model.LocationFixData;
-import usf.edu.cutr.grha.utils.LocationFixDataUtils;
+import edu.usf.cutr.grha.ProcessorMain;
+import edu.usf.cutr.grha.model.LocationFixData;
+import edu.usf.cutr.grha.utils.LocationFixDataUtils;
 
 import java.io.Reader;
 import java.util.List;

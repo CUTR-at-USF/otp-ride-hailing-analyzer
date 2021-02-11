@@ -1,6 +1,6 @@
-package usf.edu.cutr.grha;
+package edu.usf.cutr.grha;
 
-import usf.edu.cutr.grha.parsing.CsvFileParser;
+import edu.usf.cutr.grha.parsing.CsvFileParser;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

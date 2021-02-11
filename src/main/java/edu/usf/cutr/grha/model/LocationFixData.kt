@@ -1,4 +1,4 @@
-package usf.edu.cutr.grha.model
+package edu.usf.cutr.grha.model
 
 data class LocationFixData
 (

@@ -1,6 +1,6 @@
-package usf.edu.cutr.grha.utils
+package edu.usf.cutr.grha.utils
 
-import usf.edu.cutr.grha.model.LocationFixData
+import edu.usf.cutr.grha.model.LocationFixData
 
 /**
  * Utils class to interact with the LocationFixData model class
