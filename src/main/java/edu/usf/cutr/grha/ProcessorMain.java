@@ -1,5 +1,6 @@
 package edu.usf.cutr.grha;
 
+import edu.usf.cutr.grha.parsing.CsvBeanFileParser;
 import edu.usf.cutr.grha.parsing.CsvFileParser;
 
 import java.io.InputStream;
@@ -9,9 +10,17 @@ import java.nio.charset.StandardCharsets;
 
 public class ProcessorMain {
     public static void main(String[] args) {
+        parseFileByBeans();
+    }
+
+    public static void parseFileByString() {
         CsvFileParser csvFileParser = new CsvFileParser("gnss_log_2021_02_05_13_20_58.txt");
         csvFileParser.parseFile();
-        csvFileParser.printLocationData();
+    }
+
+    public static void parseFileByBeans(){
+        CsvBeanFileParser csvBeanFileParser = new CsvBeanFileParser("gnss_log_2021_02_05_13_20_58_beans.txt");
+        csvBeanFileParser.parseFile();
     }
 
 

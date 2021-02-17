@@ -23,12 +23,11 @@ public class CsvFileParser extends ProcessorMain {
         Reader reader = getReader(filePath);
         if (reader != null) {
             List<String[]> allRows = csvParser.parseAll(reader);
-            LocationFixDataUtils.saveLocationData(allRows);
+            printLocationData(LocationFixDataUtils.saveLocationData(allRows));
         }
     }
 
-    public void printLocationData() {
-        List<LocationFixData> data = LocationFixDataUtils.getLocationData();
+    public void printLocationData(List<LocationFixData> data) {
         for (LocationFixData locationFixData: data) {
             System.out.println(locationFixData.getFix() + " " + locationFixData.getProvider() +" " + locationFixData.getLatitude() +
                     locationFixData.getLongitude() + " " + locationFixData.getAccuracy() + " " + locationFixData.getSpeed() +
