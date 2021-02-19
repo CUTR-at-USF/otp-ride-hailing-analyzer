@@ -29,7 +29,7 @@ public class CsvFileParser extends ProcessorMain {
 
     public void printLocationData(List<LocationFixData> data) {
         for (LocationFixData locationFixData: data) {
-            System.out.println(locationFixData.getFix() + " " + locationFixData.getProvider() +" " + locationFixData.getLatitude() +
+            System.out.println(locationFixData.getProvider() +" " + locationFixData.getLatitude() +
                     locationFixData.getLongitude() + " " + locationFixData.getAccuracy() + " " + locationFixData.getSpeed() +
                     locationFixData.getAltitude() + " " + locationFixData.getTimeInMs());
         }

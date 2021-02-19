@@ -4,7 +4,6 @@ import com.univocity.parsers.annotations.Parsed
 
 data class LocationFixData
 (
-    @Parsed val fix: String = "",
     @Parsed val provider:String = "",
     @Parsed val latitude: Double = 0.0,
     @Parsed val longitude: Double = 0.0,
