@@ -1,4 +1,4 @@
-#GNSS Ride Hailing Analyser 
+# GNSS Ride Hailing Analyser [![Java CI with Maven](https://github.com/CUTR-at-USF/gnss-ride-hailing-analyzer/actions/workflows/maven.yml/badge.svg)](https://github.com/CUTR-at-USF/gnss-ride-hailing-analyzer/actions/workflows/maven.yml)
 
 Java Application for analysing GPS data points and additional datasets for identifying ride sharing and ride hailing trips. 
 
