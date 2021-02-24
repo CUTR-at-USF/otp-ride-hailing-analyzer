@@ -114,15 +114,15 @@
                 </execution>
             </executions>
             <configuration>
-                <source>15</source>
-                <target>15</target>
+                <source>1.8</source>
+                <target>1.8</target>
             </configuration>
         </plugin>
     </plugins>
 </build>
     <properties>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.version>1.4.10</kotlin.version>
     </properties>
 
