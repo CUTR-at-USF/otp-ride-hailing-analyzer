@@ -14,6 +14,7 @@ data class ChicagoData
     @Parsed val pickupCommunityArea: Int = 0,
     @Parsed val dropoffCommunityArea: Int = 0,
     @Parsed val fare: Double = 0.0,
+    @Parsed val tip: Double = 0.0,
     @Parsed val additionalCharges: Double = 0.0,
     @Parsed val tripTotal: Double = 0.0,
     @Parsed val sharedTripAuthorized: String = "",
