@@ -14,9 +14,9 @@ To build the application use `mvn clean package` command. This command will crea
 under the target folder.
 
 ## Run
-To run the application use `java -jar` command. 
+To run the application use `java -jar` command. Make sure to enter the filename as an argument
 ```
-java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar
+java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar filename
 ```
 
 ## License
