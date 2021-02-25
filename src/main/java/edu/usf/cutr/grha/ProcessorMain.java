@@ -22,7 +22,7 @@ public class ProcessorMain {
 
     public static void parseFileByBeans(String filename){
         CsvBeanFileParser csvBeanFileParser = new CsvBeanFileParser(filename);
-        csvBeanFileParser.parseFile();
+        csvBeanFileParser.parseChicagoData();
     }
 
 
@@ -35,7 +35,6 @@ public class ProcessorMain {
      * @return a reader of the resource
      */
     public static Reader getReader(String filePath) {
-        System.out.println(filePath);
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(filePath);
         if (inputStream != null) {
