@@ -10,7 +10,9 @@ import java.nio.charset.StandardCharsets;
 
 public class ProcessorMain {
     public static void main(String[] args) {
-        parseFileByBeans();
+        for (String filename : args) {
+            parseFileByBeans(filename);
+        }
     }
 
     public static void parseFileByString() {
@@ -18,8 +20,8 @@ public class ProcessorMain {
         csvFileParser.parseFile();
     }
 
-    public static void parseFileByBeans(){
-        CsvBeanFileParser csvBeanFileParser = new CsvBeanFileParser("gnss_log_2021_02_05_13_20_58_beans.txt");
+    public static void parseFileByBeans(String filename){
+        CsvBeanFileParser csvBeanFileParser = new CsvBeanFileParser(filename);
         csvBeanFileParser.parseFile();
     }
 
