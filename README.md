@@ -4,21 +4,32 @@ Java Application for analysing GPS data points and additional datasets for ident
 
 ## Datasets
 
-The preliminary dataset is collected using the ![GPSTest](https://github.com/barbeau/gpstest) app. The datasets are stored 
-as two variations. 
+The application currently supports two different data inputs:
+1. GNSS data traces (potentially from a variety of modes of transportation)
+2. Ride-hailing data
+
+The ultimate goal is to use the ride-hailing ground-truth data to identify ride-hailing trips in the raw GNSS traces.
+
+The preliminary GNSS data traces are collected using the [GPSTest](https://github.com/barbeau/gpstest) app. 
+
+The GPSTest datasets are stored as two variations: 
 * gnss_log_2021_02_05_13_20_58.txt (Fetched as is from the app)
 * gnss_log_2021_02_05_13_20_58_beans.txt (Modified to directly map the headers to the model class)
-* Transportation_Network_Providers_reduced_records.csv (Reduced number of [Chicago TNC data](https://data.cityofchicago.org/Transportation/Transportation-Network-Providers-Trips/m6dm-c72p/data). )
+
+The preliminary ride-hailing data is from the [Chicago open TNC dataset](https://data.cityofchicago.org/Transportation/Transportation-Network-Providers-Trips/m6dm-c72p/data): 
+* Transportation_Network_Providers_reduced_records.csv (small subset of data)
 
 ## Build
 To build the application use `mvn clean package` command. This command will create a jar file (i.e., gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar) 
 under the target folder.
 
 ## Run
-To run the application use `java -jar` command. Make sure to enter the filename as an argument. You can enter multiple 
-filenames arguments by separating them with a space. 
+To run the application use `java -jar` command. 
+
+The first command-line parameter should be the GPSTest data filename with simple headers, and the 2nd parameter should be the filename of the Chicago dataset: 
+
 ```
-java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar filename1 filename2
+java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar filename1.txt filename2.csv
 ```
 
 ## License
