@@ -29,7 +29,5 @@ class GPSTestParserTest {
         assertEquals(7.920000, l1.speed)
         assertEquals(4.416990, l1.accuracy)
         assertEquals(1612549262000, l1.timeInMs)
-
-
     }
 }
