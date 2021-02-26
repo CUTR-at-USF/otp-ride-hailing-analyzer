@@ -24,7 +24,7 @@ public class ProcessorMain {
 
     public static void main(String[] args) {
         if (args.length != 2) {
-            System.out.println("The first command-line parameter should be the GPSTest data filename with simple headers, and the 2nd parameter should be the filename of the Chicago datset");
+            System.out.println("The first command-line parameter should be the GPSTest data filename with simple headers, and the 2nd parameter should be the filename of the Chicago dataset");
             System.exit(1);
         }
 
