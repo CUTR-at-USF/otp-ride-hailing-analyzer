@@ -8,15 +8,17 @@ The preliminary dataset is collected using the ![GPSTest](https://github.com/bar
 as two variations. 
 * gnss_log_2021_02_05_13_20_58.txt (Fetched as is from the app)
 * gnss_log_2021_02_05_13_20_58_beans.txt (Modified to directly map the headers to the model class)
+* Transportation_Network_Providers_reduced_records.csv (Reduced number of [Chicago TNC data](https://data.cityofchicago.org/Transportation/Transportation-Network-Providers-Trips/m6dm-c72p/data). )
 
 ## Build
 To build the application use `mvn clean package` command. This command will create a jar file (i.e., gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar) 
 under the target folder.
 
 ## Run
-To run the application use `java -jar` command. Make sure to enter the filename as an argument
+To run the application use `java -jar` command. Make sure to enter the filename as an argument. You can enter multiple 
+filenames arguments by separating them with a space. 
 ```
-java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar filename
+java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar filename1 filename2
 ```
 
 ## License
