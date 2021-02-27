@@ -7,6 +7,7 @@ import kotlin.test.assertEquals
 class GPSTestParserTest {
 
     private val gpsTestFile = "gnss_log_2021_02_05_13_20_58_beans.txt"
+
     @Test
     fun testGpsTestParser() {
         val gpsTestParser = GPSTestParser(gpsTestFile)
