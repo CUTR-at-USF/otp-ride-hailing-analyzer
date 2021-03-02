@@ -1,16 +1,17 @@
 package edu.usf.cutr.grha.test
 
+import edu.usf.cutr.grha.io.CsvParser
 import edu.usf.cutr.grha.io.GPSTestParser
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class GPSTestParserTest {
 
-    private val gpsTestFile = "gnss_log_2021_02_05_13_20_58_beans.txt"
+    private val gpsTestFile = "src/test/resources/gnss_log_2021_02_05_13_20_58_beans.txt"
 
     @Test
     fun testGpsTestParser() {
-        val gpsTestParser = GPSTestParser(gpsTestFile)
+        val gpsTestParser = GPSTestParser(CsvParser().getInputStream(gpsTestFile))
         val locations = gpsTestParser.parseFile()
 
         val l0 = locations[0]

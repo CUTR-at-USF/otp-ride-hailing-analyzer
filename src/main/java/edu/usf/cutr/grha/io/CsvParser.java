@@ -15,13 +15,10 @@
  */
 package edu.usf.cutr.grha.io;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
-public abstract class CsvParser {
+public class CsvParser {
 
     /**
      * Creates a reader for a resource in the relative path.
@@ -38,5 +35,17 @@ public abstract class CsvParser {
         return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
       }
       return null;
+    }
+
+    public Reader getReader(InputStream inputStream) {
+        if (inputStream != null) {
+            return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        }
+        return null;
+    }
+
+    public InputStream getInputStream(String filename) throws FileNotFoundException {
+        File file = new File(filename);
+        return new FileInputStream(file);
     }
 }

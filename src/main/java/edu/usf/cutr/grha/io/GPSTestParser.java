@@ -21,6 +21,7 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import edu.usf.cutr.grha.model.Location;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -29,10 +30,11 @@ import java.util.List;
  * column names.
  */
 public class GPSTestParser extends edu.usf.cutr.grha.io.CsvParser {
-    public final String filePath;
+    public InputStream inputStream;
 
-    public GPSTestParser(String filePath) {
-        this.filePath = filePath;
+
+    public GPSTestParser(InputStream inputStream) {
+        this.inputStream = inputStream;
     }
 
     public List<Location> parseFile() {
@@ -42,7 +44,7 @@ public class GPSTestParser extends edu.usf.cutr.grha.io.CsvParser {
         csvParserSettings.setHeaderExtractionEnabled(true);
         csvParserSettings.setProcessor(new ConcurrentRowProcessor(beanListProcessor));
         CsvParser csvParser = new CsvParser(csvParserSettings);
-        csvParser.parse(getReader(filePath));
+        csvParser.parse(getReader(inputStream));
         return beanListProcessor.getBeans();
     }
 }

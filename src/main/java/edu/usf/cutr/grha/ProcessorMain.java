@@ -16,24 +16,30 @@
 package edu.usf.cutr.grha;
 
 import edu.usf.cutr.grha.io.ChicagoTncParser;
+import edu.usf.cutr.grha.io.CsvParser;
 import edu.usf.cutr.grha.io.GPSTestExtendedHeaderParser;
 import edu.usf.cutr.grha.io.GPSTestParser;
 import edu.usf.cutr.grha.utils.IOUtils;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class ProcessorMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         if (args.length != 2) {
             System.out.println("The first command-line parameter should be the GPSTest data filename with simple headers, and the 2nd parameter should be the filename of the Chicago dataset");
             System.exit(1);
         }
 
-        GPSTestParser gpsTestParser = new GPSTestParser(args[0]);
+        InputStream inputStream0 = new CsvParser().getInputStream(args[0]);
+        GPSTestParser gpsTestParser = new GPSTestParser(inputStream0);
         System.out.println("*** GPSTest data ***");
         IOUtils.printLocations(gpsTestParser.parseFile());
 
         System.out.println("*** Chicago open TNC data ***");
-        ChicagoTncParser chicagoTncParser = new ChicagoTncParser(args[1]);
+        InputStream inputStream1 = new CsvParser().getInputStream(args[1]);
+        ChicagoTncParser chicagoTncParser = new ChicagoTncParser(inputStream1);
         IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
     }
 
