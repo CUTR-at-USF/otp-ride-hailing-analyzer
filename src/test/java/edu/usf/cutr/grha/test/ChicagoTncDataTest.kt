@@ -9,7 +9,7 @@ import kotlin.test.assertNull
 
 class ChicagoTncDataTest {
 
-    private val chicagoDataFile = "src/main/resources/Transportation_Network_Providers_reduced_records.csv"
+    private val chicagoDataFile = "src/test/resources/Transportation_Network_Providers_reduced_records.csv"
 
     @Test
     fun testChicagoData() {
