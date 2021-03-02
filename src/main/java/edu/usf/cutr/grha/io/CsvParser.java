@@ -40,7 +40,7 @@ public class CsvParser {
      * Creates an input stream for the file
      * @param filename Path of the file
      * @return input stream for the @link #getReader() function above.
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException throws exception when no file is present
      */
     public InputStream getInputStream(String filename) throws FileNotFoundException {
         File file = new File(filename);
