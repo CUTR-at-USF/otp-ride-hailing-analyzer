@@ -46,8 +46,9 @@ public class ProcessorMain {
     /**
      * Currently unused - parses the GPSTest file with the additional comments in the CSV header
      */
-    public static void demoParsingWithExtendedHeader() {
-        GPSTestExtendedHeaderParser GPSTestExtendedHeaderParser = new GPSTestExtendedHeaderParser("gnss_log_2021_02_05_13_20_58.txt");
+    public static void demoParsingWithExtendedHeader() throws FileNotFoundException {
+        InputStream inputStream = new CsvParser().getInputStream("src/test/resources/gnss_log_2021_02_05_13_20_58.txt");
+        GPSTestExtendedHeaderParser GPSTestExtendedHeaderParser = new GPSTestExtendedHeaderParser(inputStream);
         IOUtils.printLocations(GPSTestExtendedHeaderParser.parseFile());
     }
 }

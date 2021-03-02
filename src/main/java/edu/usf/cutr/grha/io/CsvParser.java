@@ -24,18 +24,10 @@ public class CsvParser {
      * Creates a reader for a resource in the relative path.
      * Fetched from https://github.com/uniVocity/univocity-parsers/blob/master/src/test/java/com/univocity/parsers/examples/Example.java#L39
      *
-     * @param filePath relative path of the resource to be read
+     * @param inputStream input stream of the file to be read
      *
      * @return a reader of the resource, or null if the file couldn't be read
      */
-    public Reader getReader(String filePath) {
-      ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-      InputStream inputStream = classLoader.getResourceAsStream(filePath);
-      if (inputStream != null) {
-        return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-      }
-      return null;
-    }
 
     public Reader getReader(InputStream inputStream) {
         if (inputStream != null) {
@@ -44,6 +36,12 @@ public class CsvParser {
         return null;
     }
 
+    /**
+     * Creates an input stream for the file
+     * @param filename Path of the file
+     * @return input stream for the @link #getReader() function above.
+     * @throws FileNotFoundException
+     */
     public InputStream getInputStream(String filename) throws FileNotFoundException {
         File file = new File(filename);
         return new FileInputStream(file);

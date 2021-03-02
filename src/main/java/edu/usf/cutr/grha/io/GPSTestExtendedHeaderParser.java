@@ -15,14 +15,15 @@
  */
 package edu.usf.cutr.grha.io;
 
-import static edu.usf.cutr.grha.utils.IOUtils.toLocations;
-
 import com.univocity.parsers.csv.CsvParserSettings;
 import edu.usf.cutr.grha.model.Location;
 
+import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+
+import static edu.usf.cutr.grha.utils.IOUtils.toLocations;
 
 /**
  * Parses location data from GPSTest with an extended CSV header with comments. These files
@@ -30,10 +31,10 @@ import java.util.List;
  */
 public class GPSTestExtendedHeaderParser extends CsvParser {
 
-    public final String filePath;
+    public InputStream inputStream;
 
-    public GPSTestExtendedHeaderParser(String filePath) {
-        this.filePath = filePath;
+    public GPSTestExtendedHeaderParser(InputStream inputStream) {
+        this.inputStream = inputStream;
     }
 
     public List<Location> parseFile() {
@@ -41,7 +42,7 @@ public class GPSTestExtendedHeaderParser extends CsvParser {
         csvParserSettings.getFormat().setLineSeparator("\n");
         com.univocity.parsers.csv.CsvParser csvParser = new com.univocity.parsers.csv.CsvParser(
             csvParserSettings);
-        Reader reader = getReader(filePath);
+        Reader reader = getReader(inputStream);
         if (reader != null) {
             List<String[]> allRows = csvParser.parseAll(reader);
             return toLocations(allRows);
