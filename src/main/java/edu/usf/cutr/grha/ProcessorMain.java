@@ -20,10 +20,8 @@ import edu.usf.cutr.grha.io.GPSTestExtendedHeaderParser;
 import edu.usf.cutr.grha.io.GPSTestParser;
 import edu.usf.cutr.grha.utils.IOUtils;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class ProcessorMain {
 
@@ -34,9 +32,7 @@ public class ProcessorMain {
         }
 
         try {
-            File gps_test = new File(args[0]);
-            InputStream gps_input_stream = new FileInputStream(gps_test);
-            GPSTestParser gpsTestParser = new GPSTestParser(gps_input_stream);
+            GPSTestParser gpsTestParser = new GPSTestParser(new FileInputStream(args[0]));
             System.out.println("*** GPSTest data ***");
             IOUtils.printLocations(gpsTestParser.parseFile());
         } catch (FileNotFoundException fileNotFoundException) {
@@ -44,10 +40,8 @@ public class ProcessorMain {
         }
 
         try {
-            File chicago_tnc = new File(args[1]);
-            InputStream chicago_input_stream = new FileInputStream(chicago_tnc);
             System.out.println("*** Chicago open TNC data ***");
-            ChicagoTncParser chicagoTncParser = new ChicagoTncParser(chicago_input_stream);
+            ChicagoTncParser chicagoTncParser = new ChicagoTncParser(new FileInputStream(args[1]));
             IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println("Chicago Data file not found. Please check the path");
@@ -58,9 +52,8 @@ public class ProcessorMain {
      * Currently unused - parses the GPSTest file with the additional comments in the CSV header
      */
     public static void demoParsingWithExtendedHeader() throws FileNotFoundException {
-        File gps_test = new File("src/test/resources/gnss_log_2021_02_05_13_20_58.txt");
-        InputStream gps_test_stream = new FileInputStream(gps_test);
-        GPSTestExtendedHeaderParser GPSTestExtendedHeaderParser = new GPSTestExtendedHeaderParser(gps_test_stream);
+        GPSTestExtendedHeaderParser GPSTestExtendedHeaderParser = new GPSTestExtendedHeaderParser(
+                new FileInputStream("src/test/resources/gnss_log_2021_02_05_13_20_58.txt"));
         IOUtils.printLocations(GPSTestExtendedHeaderParser.parseFile());
     }
 }

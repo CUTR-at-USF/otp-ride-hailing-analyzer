@@ -12,8 +12,7 @@ class ChicagoTncDataTest {
     @Test
     fun testChicagoData() {
         val classLoader = Thread.currentThread().contextClassLoader
-        val inputTestStream = classLoader.getResourceAsStream(chicagoDataFile)
-        val chicagoTncParser = ChicagoTncParser(inputTestStream)
+        val chicagoTncParser = ChicagoTncParser(classLoader.getResourceAsStream(chicagoDataFile))
         val chicagoTncData = chicagoTncParser.parseFile()
 
         val c0 = chicagoTncData[0]

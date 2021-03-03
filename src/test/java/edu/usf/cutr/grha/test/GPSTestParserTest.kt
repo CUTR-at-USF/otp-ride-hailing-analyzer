@@ -11,8 +11,7 @@ class GPSTestParserTest {
     @Test
     fun testGpsTestParser() {
         val classLoader = Thread.currentThread().contextClassLoader
-        val inputTestStream = classLoader.getResourceAsStream(gpsTestFile)
-        val gpsTestParser = GPSTestParser(inputTestStream)
+        val gpsTestParser = GPSTestParser(classLoader.getResourceAsStream(gpsTestFile))
         val locations = gpsTestParser.parseFile()
 
         val l0 = locations[0]

@@ -20,7 +20,6 @@ import edu.usf.cutr.grha.model.Location;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.List;
 
 import static edu.usf.cutr.grha.utils.IOUtils.toLocations;
@@ -29,7 +28,7 @@ import static edu.usf.cutr.grha.utils.IOUtils.toLocations;
  * Parses location data from GPSTest with an extended CSV header with comments. These files
  * can't be parsed as simple beans because the first line isn't the column names.
  */
-public class GPSTestExtendedHeaderParser extends CsvParser {
+public class GPSTestExtendedHeaderParser {
 
     public InputStream inputStream;
 
@@ -42,8 +41,7 @@ public class GPSTestExtendedHeaderParser extends CsvParser {
         csvParserSettings.getFormat().setLineSeparator("\n");
         com.univocity.parsers.csv.CsvParser csvParser = new com.univocity.parsers.csv.CsvParser(
             csvParserSettings);
-        Reader reader = new InputStreamReader(inputStream);
-        List<String[]> allRows = csvParser.parseAll(reader);
+        List<String[]> allRows = csvParser.parseAll(new InputStreamReader(inputStream));
         return toLocations(allRows);
     }
 }
