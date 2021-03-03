@@ -16,39 +16,51 @@
 package edu.usf.cutr.grha;
 
 import edu.usf.cutr.grha.io.ChicagoTncParser;
-import edu.usf.cutr.grha.io.CsvParser;
 import edu.usf.cutr.grha.io.GPSTestExtendedHeaderParser;
 import edu.usf.cutr.grha.io.GPSTestParser;
 import edu.usf.cutr.grha.utils.IOUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ProcessorMain {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("The first command-line parameter should be the GPSTest data filename with simple headers, and the 2nd parameter should be the filename of the Chicago dataset");
             System.exit(1);
         }
 
-        InputStream inputStream0 = new CsvParser().getInputStream(args[0]);
-        GPSTestParser gpsTestParser = new GPSTestParser(inputStream0);
-        System.out.println("*** GPSTest data ***");
-        IOUtils.printLocations(gpsTestParser.parseFile());
+        try {
+            File gps_test = new File(args[0]);
+            InputStream gps_input_stream = new FileInputStream(gps_test);
+            GPSTestParser gpsTestParser = new GPSTestParser(gps_input_stream);
+            System.out.println("*** GPSTest data ***");
+            IOUtils.printLocations(gpsTestParser.parseFile());
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println("GPS Test file not found. Please check the path");
+        }
 
-        System.out.println("*** Chicago open TNC data ***");
-        InputStream inputStream1 = new CsvParser().getInputStream(args[1]);
-        ChicagoTncParser chicagoTncParser = new ChicagoTncParser(inputStream1);
-        IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
+        try {
+            File chicago_tnc = new File(args[1]);
+            InputStream chicago_input_stream = new FileInputStream(chicago_tnc);
+            System.out.println("*** Chicago open TNC data ***");
+            ChicagoTncParser chicagoTncParser = new ChicagoTncParser(chicago_input_stream);
+            IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println("Chicago Data file not found. Please check the path");
+        }
     }
 
     /**
      * Currently unused - parses the GPSTest file with the additional comments in the CSV header
      */
     public static void demoParsingWithExtendedHeader() throws FileNotFoundException {
-        InputStream inputStream = new CsvParser().getInputStream("src/test/resources/gnss_log_2021_02_05_13_20_58.txt");
-        GPSTestExtendedHeaderParser GPSTestExtendedHeaderParser = new GPSTestExtendedHeaderParser(inputStream);
+        File gps_test = new File("src/test/resources/gnss_log_2021_02_05_13_20_58.txt");
+        InputStream gps_test_stream = new FileInputStream(gps_test);
+        GPSTestExtendedHeaderParser GPSTestExtendedHeaderParser = new GPSTestExtendedHeaderParser(gps_test_stream);
         IOUtils.printLocations(GPSTestExtendedHeaderParser.parseFile());
     }
 }

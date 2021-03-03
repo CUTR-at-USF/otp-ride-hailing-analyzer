@@ -15,35 +15,26 @@
  */
 package edu.usf.cutr.grha.io;
 
-import java.io.*;
+import com.univocity.parsers.common.processor.BeanListProcessor;
+import com.univocity.parsers.common.processor.ConcurrentRowProcessor;
+import com.univocity.parsers.csv.CsvParserSettings;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
-public class CsvParser {
+public abstract class CsvParser {
 
-    /**
-     * Creates a reader for a resource in the relative path.
-     * Fetched from https://github.com/uniVocity/univocity-parsers/blob/master/src/test/java/com/univocity/parsers/examples/Example.java#L39
-     *
-     * @param inputStream input stream of the file to be read
-     *
-     * @return a reader of the resource, or null if the file couldn't be read
-     */
-
-    public Reader getReader(InputStream inputStream) {
-        if (inputStream != null) {
-            return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-        }
-        return null;
-    }
-
-    /**
-     * Creates an input stream for the file
-     * @param filename Path of the file
-     * @return input stream for the @link #getReader() function above.
-     * @throws FileNotFoundException throws exception when no file is present
-     */
-    public InputStream getInputStream(String filename) throws FileNotFoundException {
-        File file = new File(filename);
-        return new FileInputStream(file);
+    public <T> List<T> parseFile(BeanListProcessor<T> beanListProcessor, InputStream inputStream) {
+        CsvParserSettings csvParserSettings = new CsvParserSettings();
+        csvParserSettings.getFormat().setLineSeparator("\n");
+        csvParserSettings.setHeaderExtractionEnabled(true);
+        csvParserSettings.setProcessor(new ConcurrentRowProcessor(beanListProcessor));
+        com.univocity.parsers.csv.CsvParser csvParser = new com.univocity.parsers.csv.CsvParser(csvParserSettings);
+        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        csvParser.parse(reader);
+        return beanListProcessor.getBeans();
     }
 }

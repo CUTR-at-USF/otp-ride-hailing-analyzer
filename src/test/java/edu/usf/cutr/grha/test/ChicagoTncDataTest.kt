@@ -2,19 +2,18 @@ package edu.usf.cutr.grha.test
 
 import edu.usf.cutr.grha.io.ChicagoTncParser
 import org.junit.Test
-import java.io.File
-import java.io.FileInputStream
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class ChicagoTncDataTest {
 
-    private val chicagoDataFile = "src/test/resources/Transportation_Network_Providers_reduced_records.csv"
+    private val chicagoDataFile = "Transportation_Network_Providers_reduced_records.csv"
 
     @Test
     fun testChicagoData() {
-        val file = File(chicagoDataFile)
-        val chicagoTncParser = ChicagoTncParser(FileInputStream(file))
+        val classLoader = Thread.currentThread().contextClassLoader
+        val inputTestStream = classLoader.getResourceAsStream(chicagoDataFile)
+        val chicagoTncParser = ChicagoTncParser(inputTestStream)
         val chicagoTncData = chicagoTncParser.parseFile()
 
         val c0 = chicagoTncData[0]

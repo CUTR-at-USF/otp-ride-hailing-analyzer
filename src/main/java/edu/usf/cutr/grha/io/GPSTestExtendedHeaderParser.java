@@ -19,8 +19,8 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import edu.usf.cutr.grha.model.Location;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.List;
 
 import static edu.usf.cutr.grha.utils.IOUtils.toLocations;
@@ -42,13 +42,8 @@ public class GPSTestExtendedHeaderParser extends CsvParser {
         csvParserSettings.getFormat().setLineSeparator("\n");
         com.univocity.parsers.csv.CsvParser csvParser = new com.univocity.parsers.csv.CsvParser(
             csvParserSettings);
-        Reader reader = getReader(inputStream);
-        if (reader != null) {
-            List<String[]> allRows = csvParser.parseAll(reader);
-            return toLocations(allRows);
-        } else {
-            System.out.println("File not found");
-            return new ArrayList<>();
-        }
+        Reader reader = new InputStreamReader(inputStream);
+        List<String[]> allRows = csvParser.parseAll(reader);
+        return toLocations(allRows);
     }
 }
