@@ -15,6 +15,10 @@
  */
 package edu.usf.cutr.grha.io;
 
+import com.univocity.parsers.common.processor.BeanListProcessor;
+import com.univocity.parsers.common.processor.ConcurrentRowProcessor;
+import com.univocity.parsers.csv.CsvParserSettings;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -23,20 +27,14 @@ import java.util.List;
 
 public abstract class CsvParser {
 
-    /**
-     * Creates a reader for a resource in the relative path.
-     * Fetched from https://github.com/uniVocity/univocity-parsers/blob/master/src/test/java/com/univocity/parsers/examples/Example.java#L39
-     *
-     * @param filePath relative path of the resource to be read
-     *
-     * @return a reader of the resource, or null if the file couldn't be read
-     */
-    public Reader getReader(String filePath) {
-      ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-      InputStream inputStream = classLoader.getResourceAsStream(filePath);
-      if (inputStream != null) {
-        return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-      }
-      return null;
+    public <T> List<T> parseFile(BeanListProcessor<T> beanListProcessor, InputStream inputStream) {
+        CsvParserSettings csvParserSettings = new CsvParserSettings();
+        csvParserSettings.getFormat().setLineSeparator("\n");
+        csvParserSettings.setHeaderExtractionEnabled(true);
+        csvParserSettings.setProcessor(new ConcurrentRowProcessor(beanListProcessor));
+        com.univocity.parsers.csv.CsvParser csvParser = new com.univocity.parsers.csv.CsvParser(csvParserSettings);
+        Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        csvParser.parse(reader);
+        return beanListProcessor.getBeans();
     }
 }

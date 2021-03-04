@@ -16,38 +16,20 @@
 package edu.usf.cutr.grha.io;
 
 import com.univocity.parsers.common.processor.BeanListProcessor;
-import com.univocity.parsers.common.processor.ConcurrentRowProcessor;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
 import edu.usf.cutr.grha.model.ChicagoTncData;
 
-import java.io.Reader;
-import java.util.ArrayList;
+import java.io.InputStream;
 import java.util.List;
 
 public class ChicagoTncParser extends edu.usf.cutr.grha.io.CsvParser {
 
-    public final String filePath;
+    public InputStream inputStream;
 
-    public ChicagoTncParser(String filePath) {
-        this.filePath = filePath;
-    }
+    public ChicagoTncParser(InputStream inputStream) {this.inputStream = inputStream;}
 
     public List<ChicagoTncData> parseFile() {
         BeanListProcessor<ChicagoTncData> beanListProcessor = new BeanListProcessor<>(
             ChicagoTncData.class);
-        CsvParserSettings csvParserSettings = new CsvParserSettings();
-        csvParserSettings.getFormat().setLineSeparator("\n");
-        csvParserSettings.setHeaderExtractionEnabled(true);
-        csvParserSettings.setProcessor(new ConcurrentRowProcessor(beanListProcessor));
-        CsvParser csvParser = new CsvParser(csvParserSettings);
-        Reader reader = getReader(filePath);
-        if (reader != null) {
-            csvParser.parse(reader);
-            return beanListProcessor.getBeans();
-        } else {
-            System.out.println("File not found");
-            return new ArrayList<>();
-        }
+        return parseFile(beanListProcessor, inputStream);
     }
 }

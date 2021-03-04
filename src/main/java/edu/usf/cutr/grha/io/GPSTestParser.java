@@ -16,11 +16,9 @@
 package edu.usf.cutr.grha.io;
 
 import com.univocity.parsers.common.processor.BeanListProcessor;
-import com.univocity.parsers.common.processor.ConcurrentRowProcessor;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
 import edu.usf.cutr.grha.model.Location;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -28,21 +26,16 @@ import java.util.List;
  * comments. As a result these files can be parsed as simple beans because the first line is the
  * column names.
  */
-public class GPSTestParser extends edu.usf.cutr.grha.io.CsvParser {
-    public final String filePath;
+public class GPSTestParser extends CsvParser {
+    public InputStream inputStream;
 
-    public GPSTestParser(String filePath) {
-        this.filePath = filePath;
+
+    public GPSTestParser(InputStream inputStream) {
+        this.inputStream = inputStream;
     }
 
     public List<Location> parseFile() {
         BeanListProcessor<Location> beanListProcessor = new BeanListProcessor<>(Location.class);
-        CsvParserSettings csvParserSettings = new CsvParserSettings();
-        csvParserSettings.getFormat().setLineSeparator("\n");
-        csvParserSettings.setHeaderExtractionEnabled(true);
-        csvParserSettings.setProcessor(new ConcurrentRowProcessor(beanListProcessor));
-        CsvParser csvParser = new CsvParser(csvParserSettings);
-        csvParser.parse(getReader(filePath));
-        return beanListProcessor.getBeans();
+        return parseFile(beanListProcessor, inputStream);
     }
 }
