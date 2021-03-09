@@ -10,16 +10,16 @@ import org.onebusaway.gtfs.serialization.GtfsWriter;
 import java.io.File;
 import java.util.List;
 
-public class GtfsWriterMain {
+public class TncToGtfsWriter {
 
     public String filePath;
 
-    public GtfsWriterMain(String filePath) {
+    public TncToGtfsWriter(String filePath) {
         this.filePath = filePath;
     }
 
     public void startWritingData(List<ChicagoTncData> chicagoTncDataList) {
-        GtfsWriter  writer = new GtfsWriter();
+        GtfsWriter writer = new GtfsWriter();
         writer.setOutputLocation(new File(filePath));
 
         //Creates a single fake agency in agency.txt for TNC trips

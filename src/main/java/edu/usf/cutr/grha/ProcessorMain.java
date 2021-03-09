@@ -15,7 +15,7 @@
  */
 package edu.usf.cutr.grha;
 
-import edu.usf.cutr.grha.gtfs.GtfsWriterMain;
+import edu.usf.cutr.grha.gtfs.TncToGtfsWriter;
 import edu.usf.cutr.grha.io.ChicagoTncParser;
 import edu.usf.cutr.grha.io.GPSTestExtendedHeaderParser;
 import edu.usf.cutr.grha.io.GPSTestParser;
@@ -44,7 +44,7 @@ public class ProcessorMain {
             System.out.println("*** Chicago open TNC data ***");
             ChicagoTncParser chicagoTncParser = new ChicagoTncParser(new FileInputStream(args[1]));
             // IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
-            new GtfsWriterMain(args[2]).startWritingData(chicagoTncParser.parseFile());
+            new TncToGtfsWriter(args[2]).startWritingData(chicagoTncParser.parseFile());
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println("Chicago Data file not found. Please check the path");
         }
