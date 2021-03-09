@@ -15,24 +15,25 @@ public class GtfsWriterMain {
         this.filePath = filePath;
     }
 
-    public void writeData() {
+    public void startWritingData() {
         GtfsWriter  writer = new GtfsWriter();
         writer.setOutputLocation(new File(filePath));
 
         Agency agency = new Agency();
-        agency.setId("S");
-        agency.setName("Sudarshan's Transit");
-        agency.setUrl("www.sudarshan.com");
-        agency.setTimezone("EST");
+        agency.setId(GtfsConstants.FAKE_AGENCY_ID);
+        agency.setName(GtfsConstants.FAKE_AGENCY_NAME);
+        agency.setUrl(GtfsConstants.FAKE_AGENCY_URL);
+        agency.setTimezone(GtfsConstants.AGENCY_TIMEZONE);
 
         writer.handleEntity(agency);
 
         Route route = new Route();
-        route.setId(AgencyAndId.convertFromString(agency.getId()+"_"+"1"));
-        route.setShortName("S");
+        route.setId(AgencyAndId.convertFromString(agency.getId() + "_" + GtfsConstants.FAKE_ROUTE_ID));
+        route.setShortName(GtfsConstants.FAKE_SHORT_NAME);
         route.setAgency(agency);
 
         writer.handleEntity(route);
+
         try {
             writer.close();
         } catch (Exception e) {
