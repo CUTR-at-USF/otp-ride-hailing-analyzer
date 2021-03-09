@@ -22,17 +22,17 @@ public class TncToGtfsWriter {
         GtfsWriter writer = new GtfsWriter();
         writer.setOutputLocation(new File(filePath));
 
-        //Creates a single fake agency in agency.txt for TNC trips
+        // Creates a single fake agency in agency.txt for TNC trips
         Agency agency = newFakeAgency();
         writer.handleEntity(agency);
 
-        //Creates a single fake route in routes.txt that all TNC trips can be assigned to
+        // Creates a single fake route in routes.txt that all TNC trips can be assigned to
         writer.handleEntity(newFakeRoute(agency));
 
         int counter = 0;
         for (ChicagoTncData tncData: chicagoTncDataList) {
 
-            //Creates a bus stop (for stops.txt) for the origin and destination location
+            // Creates a bus stop (for stops.txt) for the origin and destination location
             Stop originStop = newStop(tncData, agency, counter, true);
             counter++;
 
