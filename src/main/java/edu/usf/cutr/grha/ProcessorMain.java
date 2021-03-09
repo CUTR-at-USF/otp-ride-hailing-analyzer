@@ -43,8 +43,8 @@ public class ProcessorMain {
         try {
             System.out.println("*** Chicago open TNC data ***");
             ChicagoTncParser chicagoTncParser = new ChicagoTncParser(new FileInputStream(args[1]));
-            IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
-            new GtfsWriterMain(args[2]).startWritingData();
+            // IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
+            new GtfsWriterMain(args[2]).startWritingData(chicagoTncParser.parseFile());
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println("Chicago Data file not found. Please check the path");
         }
