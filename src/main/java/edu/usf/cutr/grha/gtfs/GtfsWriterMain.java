@@ -23,40 +23,25 @@ public class GtfsWriterMain {
         writer.setOutputLocation(new File(filePath));
 
         //Creates a single fake agency in agency.txt for TNC trips
-        Agency agency = new Agency();
-        agency.setId(GtfsConstants.FAKE_AGENCY_ID);
-        agency.setName(GtfsConstants.FAKE_AGENCY_NAME);
-        agency.setUrl(GtfsConstants.FAKE_AGENCY_URL);
-        agency.setTimezone(GtfsConstants.AGENCY_TIMEZONE);
-
+        Agency agency = setFakeAgency();
         writer.handleEntity(agency);
 
         //Creates a single fake route in routes.txt that all TNC trips can be assigned to
-        Route route = new Route();
-        route.setId(AgencyAndId.convertFromString(agency.getId() + "_" + GtfsConstants.FAKE_ROUTE_ID));
-        route.setShortName(GtfsConstants.FAKE_SHORT_NAME);
-        route.setAgency(agency);
-
-        writer.handleEntity(route);
+        writer.handleEntity(setFakeRoute(agency));
 
         int counter = 0;
         for (ChicagoTncData tncData: chicagoTncDataList) {
 
             //Creates a bus stop (for stops.txt) for the origin and destination location
-            Stop stop = new Stop();
-            stop.setId(AgencyAndId.convertFromString(agency.getId() + "_" + counter++));
-            stop.setName(tncData.getTripId());
-            stop.setLat(tncData.getPickupCentroidLatitude());
-            stop.setLon(tncData.getPickupCentroidLongitude());
+            Stop originStop = setStop(tncData, agency, counter, true);
+            counter++;
 
-            writer.handleEntity(stop);
+            writer.handleEntity(originStop);
 
-            stop.setId(AgencyAndId.convertFromString(agency.getId() +"_" + counter++));
-            stop.setName(tncData.getTripId());
-            stop.setLat(tncData.getDropoffCentroidLatitude());
-            stop.setLon(tncData.getDropoffCentroidLongitude());
+            Stop destinationStop = setStop(tncData, agency, counter, false);
+            counter++;
 
-            writer.handleEntity(stop);
+            writer.handleEntity(destinationStop);
 
         }
 
@@ -65,5 +50,36 @@ public class GtfsWriterMain {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static Agency setFakeAgency() {
+        Agency agency = new Agency();
+        agency.setId(GtfsConstants.FAKE_AGENCY_ID);
+        agency.setName(GtfsConstants.FAKE_AGENCY_NAME);
+        agency.setUrl(GtfsConstants.FAKE_AGENCY_URL);
+        agency.setTimezone(GtfsConstants.AGENCY_TIMEZONE);
+        return agency;
+    }
+
+    public static Route setFakeRoute(Agency agency) {
+        Route route = new Route();
+        route.setId(AgencyAndId.convertFromString(agency.getId() + "_" + GtfsConstants.FAKE_ROUTE_ID));
+        route.setShortName(GtfsConstants.FAKE_SHORT_NAME);
+        route.setAgency(agency);
+        return route;
+    }
+
+    public static Stop setStop(ChicagoTncData tncData, Agency agency, int counter, boolean isOrigin) {
+        Stop stop = new Stop();
+        stop.setId(AgencyAndId.convertFromString(agency.getId() + "_" + counter));
+        stop.setName(tncData.getTripId());
+        if (isOrigin) {
+            stop.setLat(tncData.getPickupCentroidLatitude());
+            stop.setLon(tncData.getPickupCentroidLongitude());
+        } else {
+            stop.setLat(tncData.getDropoffCentroidLatitude());
+            stop.setLon(tncData.getDropoffCentroidLongitude());
+        }
+        return stop;
     }
 }
