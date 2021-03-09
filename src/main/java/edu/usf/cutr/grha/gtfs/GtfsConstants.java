@@ -10,4 +10,7 @@ public class GtfsConstants {
     public static final String FAKE_ROUTE_ID = "1";
     public static final String FAKE_SHORT_NAME = "CT1";
 
+    public static final String PICKUP_STOP_SUFFIX = "_pickup";
+    public static final String DROPOFF_STOP_SUFFIX = "_dropoff";
+
 }

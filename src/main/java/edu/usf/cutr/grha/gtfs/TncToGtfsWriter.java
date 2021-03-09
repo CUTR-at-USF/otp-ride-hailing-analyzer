@@ -18,27 +18,27 @@ public class TncToGtfsWriter {
         this.filePath = filePath;
     }
 
-    public void startWritingData(List<ChicagoTncData> chicagoTncDataList) {
+    public void write(List<ChicagoTncData> chicagoTncDataList) {
         GtfsWriter writer = new GtfsWriter();
         writer.setOutputLocation(new File(filePath));
 
         //Creates a single fake agency in agency.txt for TNC trips
-        Agency agency = setFakeAgency();
+        Agency agency = newFakeAgency();
         writer.handleEntity(agency);
 
         //Creates a single fake route in routes.txt that all TNC trips can be assigned to
-        writer.handleEntity(setFakeRoute(agency));
+        writer.handleEntity(newFakeRoute(agency));
 
         int counter = 0;
         for (ChicagoTncData tncData: chicagoTncDataList) {
 
             //Creates a bus stop (for stops.txt) for the origin and destination location
-            Stop originStop = setStop(tncData, agency, counter, true);
+            Stop originStop = newStop(tncData, agency, counter, true);
             counter++;
 
             writer.handleEntity(originStop);
 
-            Stop destinationStop = setStop(tncData, agency, counter, false);
+            Stop destinationStop = newStop(tncData, agency, counter, false);
             counter++;
 
             writer.handleEntity(destinationStop);
@@ -52,7 +52,7 @@ public class TncToGtfsWriter {
         }
     }
 
-    public static Agency setFakeAgency() {
+    public static Agency newFakeAgency() {
         Agency agency = new Agency();
         agency.setId(GtfsConstants.FAKE_AGENCY_ID);
         agency.setName(GtfsConstants.FAKE_AGENCY_NAME);
@@ -61,7 +61,7 @@ public class TncToGtfsWriter {
         return agency;
     }
 
-    public static Route setFakeRoute(Agency agency) {
+    public static Route newFakeRoute(Agency agency) {
         Route route = new Route();
         route.setId(AgencyAndId.convertFromString(agency.getId() + "_" + GtfsConstants.FAKE_ROUTE_ID));
         route.setShortName(GtfsConstants.FAKE_SHORT_NAME);
@@ -69,14 +69,15 @@ public class TncToGtfsWriter {
         return route;
     }
 
-    public static Stop setStop(ChicagoTncData tncData, Agency agency, int counter, boolean isOrigin) {
+    public static Stop newStop(ChicagoTncData tncData, Agency agency, int counter, boolean isOrigin) {
         Stop stop = new Stop();
         stop.setId(AgencyAndId.convertFromString(agency.getId() + "_" + counter));
-        stop.setName(tncData.getTripId());
         if (isOrigin) {
+            stop.setName(tncData.getTripId() + GtfsConstants.PICKUP_STOP_SUFFIX);
             stop.setLat(tncData.getPickupCentroidLatitude());
             stop.setLon(tncData.getPickupCentroidLongitude());
         } else {
+            stop.setName(tncData.getTripId() + GtfsConstants.DROPOFF_STOP_SUFFIX);
             stop.setLat(tncData.getDropoffCentroidLatitude());
             stop.setLon(tncData.getDropoffCentroidLongitude());
         }
