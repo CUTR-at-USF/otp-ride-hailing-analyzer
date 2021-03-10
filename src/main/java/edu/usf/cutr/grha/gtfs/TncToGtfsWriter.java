@@ -1,17 +1,14 @@
 package edu.usf.cutr.grha.gtfs;
 
 import edu.usf.cutr.grha.model.ChicagoTncData;
+import edu.usf.cutr.grha.utils.GtfsUtils;
 import org.onebusaway.gtfs.model.*;
 import org.onebusaway.gtfs.model.calendar.ServiceDate;
 import org.onebusaway.gtfs.serialization.GtfsWriter;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class TncToGtfsWriter {
 
@@ -47,15 +44,20 @@ public class TncToGtfsWriter {
 
             writer.handleEntity(destinationStop);
 
-            // Create a record in calendar_dates.txt with a unique service_id
+            // Creates a record in calendar_dates.txt with a unique service_id
             ServiceCalendarDate calendarDate = newCalenderDate(tncData, agency);
             writer.handleEntity(calendarDate);
 
-            // Create a record to trips.txt
+            // Creates a record to trips.txt
             Trip trip = newTrip(tncData, route, calendarDate, agency);
             writer.handleEntity(trip);
 
+            // Creates a record in stop_times.txt referencing the trip_id
+            StopTime originStopTime = newStopTime(tncData, trip, originStop, true);
+            writer.handleEntity(originStopTime);
 
+            StopTime destinationStopTime = newStopTime(tncData, trip, destinationStop, false);
+            writer.handleEntity(destinationStopTime);
         }
 
         try {
@@ -100,17 +102,8 @@ public class TncToGtfsWriter {
     public static ServiceCalendarDate newCalenderDate(ChicagoTncData tncData, Agency agency) {
         ServiceCalendarDate calendarDate = new ServiceCalendarDate();
         calendarDate.setServiceId(AgencyAndId.convertFromString(agency.getId() + "_" + tncData.getTripId()));
-
-        SimpleDateFormat format = new SimpleDateFormat("M/dd/yyyy hh:mm", Locale.ENGLISH);
-        format.setTimeZone(TimeZone.getTimeZone("America/Chicago"));
-        Date date = new Date();
-        try {
-            date = format.parse(tncData.getTripStartTimeStamp());
-        } catch (ParseException parseException) {
-            System.out.println(parseException.getMessage());
-        }
+        Date date = GtfsUtils.getDateFromTimeStamp(tncData.getTripStartTimeStamp(), "M/dd/yyyy HH:mm");
         calendarDate.setDate(new ServiceDate(date));
-
         calendarDate.setExceptionType(1);
 
         return calendarDate;
@@ -124,4 +117,21 @@ public class TncToGtfsWriter {
         return trip;
     }
 
+    public static StopTime newStopTime(ChicagoTncData tncData, Trip trip, Stop stop, boolean isOrigin) {
+        StopTime stopTime = new StopTime();
+        stopTime.setTrip(trip);
+        Date date;
+        if (isOrigin) {
+            date = GtfsUtils.getDateFromTimeStamp(tncData.getTripStartTimeStamp(), "M/dd/yyyy hh:mm");
+            stopTime.setStopSequence(1);
+        } else {
+            date = GtfsUtils.getDateFromTimeStamp(tncData.getTripEndTimeStamp(), "M/dd/yyyy hh:mm");
+            stopTime.setStopSequence(2);
+        }
+        int seconds = GtfsUtils.getTimeInSeconds(date);
+        stopTime.setArrivalTime(seconds);
+        stopTime.setDepartureTime(seconds);
+        stopTime.setStop(stop);
+        return stopTime;
+    }
 }
