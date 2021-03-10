@@ -30,7 +30,8 @@ public class TncToGtfsWriter {
         writer.handleEntity(agency);
 
         // Creates a single fake route in routes.txt that all TNC trips can be assigned to
-        writer.handleEntity(newFakeRoute(agency));
+        Route route = newFakeRoute(agency);
+        writer.handleEntity(route);
 
         int counter = 0;
         for (ChicagoTncData tncData: chicagoTncDataList) {
@@ -49,6 +50,11 @@ public class TncToGtfsWriter {
             // Create a record in calendar_dates.txt with a unique service_id
             ServiceCalendarDate calendarDate = newCalenderDate(tncData, agency);
             writer.handleEntity(calendarDate);
+
+            // Create a record to trips.txt
+            Trip trip = newTrip(tncData, route, calendarDate, agency);
+            writer.handleEntity(trip);
+
 
         }
 
@@ -109,4 +115,13 @@ public class TncToGtfsWriter {
 
         return calendarDate;
     }
+
+    public static Trip newTrip(ChicagoTncData tncData, Route route, ServiceCalendarDate date, Agency agency) {
+        Trip trip = new Trip();
+        trip.setId(AgencyAndId.convertFromString(agency.getId() + "_" + tncData.getTripId()));
+        trip.setServiceId(date.getServiceId());
+        trip.setRoute(route);
+        return trip;
+    }
+
 }
