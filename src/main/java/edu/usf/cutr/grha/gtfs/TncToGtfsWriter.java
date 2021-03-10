@@ -1,14 +1,17 @@
 package edu.usf.cutr.grha.gtfs;
 
 import edu.usf.cutr.grha.model.ChicagoTncData;
-import org.onebusaway.gtfs.model.Agency;
-import org.onebusaway.gtfs.model.AgencyAndId;
-import org.onebusaway.gtfs.model.Route;
-import org.onebusaway.gtfs.model.Stop;
+import org.onebusaway.gtfs.model.*;
+import org.onebusaway.gtfs.model.calendar.ServiceDate;
 import org.onebusaway.gtfs.serialization.GtfsWriter;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class TncToGtfsWriter {
 
@@ -42,6 +45,10 @@ public class TncToGtfsWriter {
             counter++;
 
             writer.handleEntity(destinationStop);
+
+            // Create a record in calendar_dates.txt with a unique service_id
+            ServiceCalendarDate calendarDate = newCalenderDate(tncData, agency);
+            writer.handleEntity(calendarDate);
 
         }
 
@@ -82,5 +89,24 @@ public class TncToGtfsWriter {
             stop.setLon(tncData.getDropoffCentroidLongitude());
         }
         return stop;
+    }
+
+    public static ServiceCalendarDate newCalenderDate(ChicagoTncData tncData, Agency agency) {
+        ServiceCalendarDate calendarDate = new ServiceCalendarDate();
+        calendarDate.setServiceId(AgencyAndId.convertFromString(agency.getId() + "_" + tncData.getTripId()));
+
+        SimpleDateFormat format = new SimpleDateFormat("M/dd/yyyy hh:mm", Locale.ENGLISH);
+        format.setTimeZone(TimeZone.getTimeZone("America/Chicago"));
+        Date date = new Date();
+        try {
+            date = format.parse(tncData.getTripStartTimeStamp());
+        } catch (ParseException parseException) {
+            System.out.println(parseException.getMessage());
+        }
+        calendarDate.setDate(new ServiceDate(date));
+
+        calendarDate.setExceptionType(1);
+
+        return calendarDate;
     }
 }
