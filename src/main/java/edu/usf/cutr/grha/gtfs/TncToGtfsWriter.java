@@ -75,6 +75,8 @@ public class TncToGtfsWriter {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        System.out.println("GTFS data exported to: " + filePath);
     }
 
     public static Agency newFakeAgency() {
