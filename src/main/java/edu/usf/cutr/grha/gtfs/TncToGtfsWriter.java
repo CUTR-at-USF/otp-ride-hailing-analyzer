@@ -11,13 +11,13 @@ import java.util.Date;
 import java.util.List;
 
 public class TncToGtfsWriter {
-    private static final String FAKE_AGENCY_ID = "CUTR";
-    private static final String FAKE_AGENCY_NAME = "Chicago x Tampa";
-    private static final String FAKE_AGENCY_URL = "www.fake.url.edu";
-    private static final String AGENCY_TIMEZONE = "EST";
+    private static final String FAKE_AGENCY_ID = "chicago-tnc";
+    private static final String FAKE_AGENCY_NAME = "Chicago TNC Trips";
+    private static final String FAKE_AGENCY_URL = "https://data.cityofchicago.org/Transportation/Transportation-Network-Providers-Trips/m6dm-c72p/data";
+    private static final String AGENCY_TIMEZONE = "America/Chicago";
 
     private static final String FAKE_ROUTE_ID = "1";
-    private static final String FAKE_SHORT_NAME = "CT1";
+    private static final String FAKE_SHORT_NAME = "TNC Trips";
 
     private static final String PICKUP_STOP_SUFFIX = "_pickup";
     private static final String DROPOFF_STOP_SUFFIX = "_dropoff";
@@ -40,7 +40,7 @@ public class TncToGtfsWriter {
         Route route = newFakeRoute(agency);
         writer.handleEntity(route);
 
-        int counter = 0;
+        int counter = 1;
         for (ChicagoTncData tncData: chicagoTncDataList) {
 
             // Creates a bus stop (for stops.txt) for the origin and destination location
