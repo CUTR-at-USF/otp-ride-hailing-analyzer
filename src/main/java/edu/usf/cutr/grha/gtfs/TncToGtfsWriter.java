@@ -11,6 +11,16 @@ import java.util.Date;
 import java.util.List;
 
 public class TncToGtfsWriter {
+    private static final String FAKE_AGENCY_ID = "CUTR";
+    private static final String FAKE_AGENCY_NAME = "Chicago x Tampa";
+    private static final String FAKE_AGENCY_URL = "www.fake.url.edu";
+    private static final String AGENCY_TIMEZONE = "EST";
+
+    private static final String FAKE_ROUTE_ID = "1";
+    private static final String FAKE_SHORT_NAME = "CT1";
+
+    private static final String PICKUP_STOP_SUFFIX = "_pickup";
+    private static final String DROPOFF_STOP_SUFFIX = "_dropoff";
 
     public String filePath;
 
@@ -69,17 +79,17 @@ public class TncToGtfsWriter {
 
     public static Agency newFakeAgency() {
         Agency agency = new Agency();
-        agency.setId(GtfsConstants.FAKE_AGENCY_ID);
-        agency.setName(GtfsConstants.FAKE_AGENCY_NAME);
-        agency.setUrl(GtfsConstants.FAKE_AGENCY_URL);
-        agency.setTimezone(GtfsConstants.AGENCY_TIMEZONE);
+        agency.setId(FAKE_AGENCY_ID);
+        agency.setName(FAKE_AGENCY_NAME);
+        agency.setUrl(FAKE_AGENCY_URL);
+        agency.setTimezone(AGENCY_TIMEZONE);
         return agency;
     }
 
     public static Route newFakeRoute(Agency agency) {
         Route route = new Route();
-        route.setId(AgencyAndId.convertFromString(agency.getId() + "_" + GtfsConstants.FAKE_ROUTE_ID));
-        route.setShortName(GtfsConstants.FAKE_SHORT_NAME);
+        route.setId(AgencyAndId.convertFromString(agency.getId() + "_" + FAKE_ROUTE_ID));
+        route.setShortName(FAKE_SHORT_NAME);
         route.setAgency(agency);
         return route;
     }
@@ -88,11 +98,11 @@ public class TncToGtfsWriter {
         Stop stop = new Stop();
         stop.setId(AgencyAndId.convertFromString(agency.getId() + "_" + counter));
         if (isOrigin) {
-            stop.setName(tncData.getTripId() + GtfsConstants.PICKUP_STOP_SUFFIX);
+            stop.setName(tncData.getTripId() + PICKUP_STOP_SUFFIX);
             stop.setLat(tncData.getPickupCentroidLatitude());
             stop.setLon(tncData.getPickupCentroidLongitude());
         } else {
-            stop.setName(tncData.getTripId() + GtfsConstants.DROPOFF_STOP_SUFFIX);
+            stop.setName(tncData.getTripId() + DROPOFF_STOP_SUFFIX);
             stop.setLat(tncData.getDropoffCentroidLatitude());
             stop.setLon(tncData.getDropoffCentroidLongitude());
         }
