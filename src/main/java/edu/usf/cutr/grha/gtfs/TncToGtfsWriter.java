@@ -43,6 +43,16 @@ public class TncToGtfsWriter {
         int counter = 1;
         for (ChicagoTncData tncData: chicagoTncDataList) {
 
+            // Check for data with no location values
+            if (tncData.getPickupCentroidLatitude() == 0 ||
+            tncData.getPickupCentroidLongitude() == 0 ||
+            tncData.getDropoffCentroidLatitude() == 0 ||
+            tncData.getDropoffCentroidLongitude() == 0) {
+                System.out.println("Skipping record due to missing location values: \n" + tncData.toString());
+                counter ++;
+                continue;
+            }
+
             // Creates a bus stop (for stops.txt) for the origin and destination location
             Stop originStop = newStop(tncData, agency, counter, true);
             counter++;
