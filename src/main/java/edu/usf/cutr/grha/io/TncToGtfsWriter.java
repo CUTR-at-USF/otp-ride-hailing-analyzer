@@ -14,7 +14,7 @@
  * limitations under the License.
  *
  */
-package edu.usf.cutr.grha.gtfs;
+package edu.usf.cutr.grha.io;
 
 import edu.usf.cutr.grha.model.ChicagoTncData;
 import edu.usf.cutr.grha.utils.GtfsUtils;

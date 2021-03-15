@@ -15,10 +15,10 @@
  */
 package edu.usf.cutr.grha;
 
-import edu.usf.cutr.grha.gtfs.TncToGtfsWriter;
 import edu.usf.cutr.grha.io.ChicagoTncParser;
 import edu.usf.cutr.grha.io.GPSTestExtendedHeaderParser;
 import edu.usf.cutr.grha.io.GPSTestParser;
+import edu.usf.cutr.grha.io.TncToGtfsWriter;
 import edu.usf.cutr.grha.utils.IOUtils;
 
 import java.io.File;
