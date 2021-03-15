@@ -9,7 +9,7 @@ object GtfsUtils {
     @JvmStatic
      fun getDateFromTimeStamp(timeStamp: String, pattern: String): Date {
         val format = SimpleDateFormat(pattern, Locale.ENGLISH)
-        format.timeZone = TimeZone.getTimeZone("America/New_York")
+        format.timeZone = TimeZone.getTimeZone(System.getProperty("user.timezone"))
         var date = Date()
         try {
             date = format.parse(timeStamp)
