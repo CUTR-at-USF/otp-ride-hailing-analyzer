@@ -58,6 +58,7 @@ public class TncToGtfsWriter {
         writer.handleEntity(route);
 
         int counter = 1;
+        int skipCounter = 0;
         for (ChicagoTncData tncData: chicagoTncDataList) {
 
             // Check for data with no location values
@@ -66,7 +67,7 @@ public class TncToGtfsWriter {
             tncData.getDropoffCentroidLatitude() == 0 ||
             tncData.getDropoffCentroidLongitude() == 0) {
                 System.out.println("Skipping record due to missing location values: \n" + tncData.toString());
-                counter ++;
+                skipCounter ++;
                 continue;
             }
             // get dateTime objects from timestamps
@@ -105,7 +106,7 @@ public class TncToGtfsWriter {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
+        System.out.println("Number of records skipped: " + skipCounter);
         System.out.println("GTFS data exported to: " + filePath);
     }
 
