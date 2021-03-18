@@ -26,10 +26,10 @@ under the target folder.
 ## Run
 To run the application use `java -jar` command. 
 
-The first command-line parameter should be the GPSTest data file path with simple headers, and the 2nd parameter should be the file path of the Chicago dataset: 
+The first command-line parameter should be the GPSTest data file path with simple headers, and the 2nd parameter should be the file path of the Chicago dataset, and the 3rd argument is where you want the dataset to be exported to. Note that the 3rd argument is optional: 
 
 ```
-java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar path/to/file/filename1.txt path/to/file/filename2.csv
+java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar path/to/file/filename1.txt path/to/file/filename2.csv export/to/folder(Optional)
 ```
 
 ## License
