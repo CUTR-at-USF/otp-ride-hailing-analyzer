@@ -23,7 +23,8 @@ import org.onebusaway.gtfs.model.calendar.ServiceDate;
 import org.onebusaway.gtfs.serialization.GtfsWriter;
 
 import java.io.File;
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TncToGtfsWriter {
@@ -68,6 +69,9 @@ public class TncToGtfsWriter {
                 counter ++;
                 continue;
             }
+            // get dateTime objects from timestamps
+            LocalDateTime startDateTime = GtfsUtils.getDateFromTimeStamp(tncData.getTripStartTimeStamp(), "M/dd/yyyy HH:mm");
+            LocalDateTime endDateTime = GtfsUtils.getDateFromTimeStamp(tncData.getTripEndTimeStamp(), "M/dd/yyyy HH:mm");
 
             // Creates a bus stop (for stops.txt) for the origin and destination location
             Stop originStop = newStop(tncData, agency, counter, true);
@@ -81,7 +85,7 @@ public class TncToGtfsWriter {
             writer.handleEntity(destinationStop);
 
             // Creates a record in calendar_dates.txt with a unique service_id
-            ServiceCalendarDate calendarDate = newCalenderDate(tncData, agency);
+            ServiceCalendarDate calendarDate = newCalenderDate(tncData, agency, startDateTime);
             writer.handleEntity(calendarDate);
 
             // Creates a record to trips.txt
@@ -89,10 +93,10 @@ public class TncToGtfsWriter {
             writer.handleEntity(trip);
 
             // Creates a record in stop_times.txt referencing the trip_id
-            StopTime originStopTime = newStopTime(tncData, trip, originStop, true);
+            StopTime originStopTime = newStopTime(trip, originStop, startDateTime);
             writer.handleEntity(originStopTime);
 
-            StopTime destinationStopTime = newStopTime(tncData, trip, destinationStop, false);
+            StopTime destinationStopTime = newStopTime(trip, destinationStop,endDateTime);
             writer.handleEntity(destinationStopTime);
         }
 
@@ -137,11 +141,10 @@ public class TncToGtfsWriter {
         return stop;
     }
 
-    public static ServiceCalendarDate newCalenderDate(ChicagoTncData tncData, Agency agency) {
+    public static ServiceCalendarDate newCalenderDate(ChicagoTncData tncData, Agency agency, LocalDateTime dateTime) {
         ServiceCalendarDate calendarDate = new ServiceCalendarDate();
         calendarDate.setServiceId(AgencyAndId.convertFromString(agency.getId() + "_" + tncData.getTripId()));
-        Date date = GtfsUtils.getDateFromTimeStamp(tncData.getTripStartTimeStamp(), "M/dd/yyyy HH:mm");
-        calendarDate.setDate(new ServiceDate(date));
+        calendarDate.setDate(new ServiceDate(dateTime.getYear(), dateTime.getMonthValue(), dateTime.getDayOfMonth()));
         calendarDate.setExceptionType(1);
 
         return calendarDate;
@@ -155,20 +158,12 @@ public class TncToGtfsWriter {
         return trip;
     }
 
-    public static StopTime newStopTime(ChicagoTncData tncData, Trip trip, Stop stop, boolean isOrigin) {
+    public static StopTime newStopTime(Trip trip, Stop stop, LocalDateTime dateTime) {
         StopTime stopTime = new StopTime();
         stopTime.setTrip(trip);
-        Date date;
-        if (isOrigin) {
-            date = GtfsUtils.getDateFromTimeStamp(tncData.getTripStartTimeStamp(), "M/dd/yyyy hh:mm");
-            stopTime.setStopSequence(1);
-        } else {
-            date = GtfsUtils.getDateFromTimeStamp(tncData.getTripEndTimeStamp(), "M/dd/yyyy hh:mm");
-            stopTime.setStopSequence(2);
-        }
-        int seconds = GtfsUtils.getTimeInSeconds(date);
-        stopTime.setArrivalTime(seconds);
-        stopTime.setDepartureTime(seconds);
+        Duration duration = Duration.between(dateTime.toLocalDate().atStartOfDay(), dateTime);
+        stopTime.setArrivalTime((int) duration.getSeconds());
+        stopTime.setDepartureTime((int) duration.getSeconds());
         stopTime.setStop(stop);
         return stopTime;
     }
