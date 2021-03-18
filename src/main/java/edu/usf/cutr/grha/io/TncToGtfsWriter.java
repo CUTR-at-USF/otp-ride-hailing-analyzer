@@ -70,8 +70,8 @@ public class TncToGtfsWriter {
                 continue;
             }
             // get dateTime objects from timestamps
-            LocalDateTime startDateTime = GtfsUtils.getDateFromTimeStamp(tncData.getTripStartTimeStamp(), "M/dd/yyyy HH:mm");
-            LocalDateTime endDateTime = GtfsUtils.getDateFromTimeStamp(tncData.getTripEndTimeStamp(), "M/dd/yyyy HH:mm");
+            LocalDateTime startDateTime = GtfsUtils.getDateFromTimeStamp(tncData.getTripStartTimeStamp(), "M/dd/yyyy H:mm");
+            LocalDateTime endDateTime = GtfsUtils.getDateFromTimeStamp(tncData.getTripEndTimeStamp(), "M/dd/yyyy H:mm");
 
             // Creates a bus stop (for stops.txt) for the origin and destination location
             Stop originStop = newStop(tncData, agency, counter, true);
