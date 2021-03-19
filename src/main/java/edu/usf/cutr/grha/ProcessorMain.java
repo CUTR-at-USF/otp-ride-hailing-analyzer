@@ -50,8 +50,9 @@ public class ProcessorMain {
             if (args.length == 3) {
                 new TncToGtfsWriter(args[2]).write(chicagoTncParser.parseFile());
             } else {
-                new File(System.getProperty("user.dir") + "\\gtfs-dataset").mkdir();
-                new TncToGtfsWriter(System.getProperty("user.dir") + "\\gtfs-dataset").write(chicagoTncParser.parseFile());
+                String filePath = "output";
+                new File(filePath).mkdirs();
+                new TncToGtfsWriter(filePath).write(chicagoTncParser.parseFile());
             }
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println("Chicago Data file not found. Please check the path");
