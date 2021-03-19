@@ -48,6 +48,7 @@ public class ProcessorMain {
             ChicagoTncParser chicagoTncParser = new ChicagoTncParser(new FileInputStream(args[1]));
             // IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
             if (args.length == 3) {
+                new File(args[2]).mkdirs();
                 new TncToGtfsWriter(args[2]).write(chicagoTncParser.parseFile());
             } else {
                 String filePath = "output";
