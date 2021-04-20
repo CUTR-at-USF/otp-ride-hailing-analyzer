@@ -19,11 +19,14 @@ import edu.usf.cutr.grha.io.ChicagoTncParser;
 import edu.usf.cutr.grha.io.GPSTestExtendedHeaderParser;
 import edu.usf.cutr.grha.io.GPSTestParser;
 import edu.usf.cutr.grha.io.TncToGtfsWriter;
+import edu.usf.cutr.grha.model.ChicagoTncData;
+import edu.usf.cutr.grha.otp.OtpService;
 import edu.usf.cutr.grha.utils.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 public class ProcessorMain {
 
@@ -47,14 +50,16 @@ public class ProcessorMain {
             System.out.println("*** Chicago open TNC data ***");
             ChicagoTncParser chicagoTncParser = new ChicagoTncParser(new FileInputStream(args[1]));
             // IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
+            List<ChicagoTncData> chicagoTncDataList = chicagoTncParser.parseFile();
             if (args.length == 3) {
                 new File(args[2]).mkdirs();
-                new TncToGtfsWriter(args[2]).write(chicagoTncParser.parseFile());
+                new TncToGtfsWriter(args[2]).write(chicagoTncDataList);
             } else {
                 String filePath = "output";
                 new File(filePath).mkdirs();
-                new TncToGtfsWriter(filePath).write(chicagoTncParser.parseFile());
+                new TncToGtfsWriter(filePath).write(chicagoTncDataList);
             }
+            new OtpService(chicagoTncDataList, "http://localhost:8080/otp/routers/default/plan").call();
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println("Chicago Data file not found. Please check the path");
         }
