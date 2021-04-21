@@ -10,8 +10,7 @@ import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resumeWithException
 
@@ -21,32 +20,82 @@ class OtpService(
 ) {
 
     fun call() {
-        getPlanData()
+        makePlanFlow()
     }
 
     private fun getPlanData() {
-        val origin = GtfsUtils.latLong(
-            chicagoTncData[2].pickupCentroidLatitude,
-            chicagoTncData[2].pickupCentroidLongitude
-        )
-        val destination = GtfsUtils.latLong(
-            chicagoTncData[2].dropoffCentroidLongitude,
-            chicagoTncData[2].dropoffCentroidLongitude
-        )
-        val requestParameters = RequestParameters(fromPlace = origin, toPlace = destination)
-        val planApi = PlanApi(url, requestParameters)
-        val planFlow = flow {
-            emit(makePlanRequest(planApi).toString())
+        var i = 0
+        var start = 0L
+        val planFlow: Flow<Planner> = flow {
+            while (i < 42) {
+                if (chicagoTncData[i].pickupCentroidLatitude == 0.0 ||
+                    chicagoTncData[i].pickupCentroidLongitude == 0.0 ||
+                    chicagoTncData[i].dropoffCentroidLongitude == 0.0 ||
+                    chicagoTncData[i].dropoffCentroidLongitude == 0.0
+                ) {
+                    i++
+                    continue
+                }
+                val origin = GtfsUtils.latLong(
+                    chicagoTncData[i].pickupCentroidLatitude,
+                    chicagoTncData[i].pickupCentroidLongitude
+                )
+                val destination = GtfsUtils.latLong(
+                    chicagoTncData[i].dropoffCentroidLongitude,
+                    chicagoTncData[i].dropoffCentroidLongitude
+                )
+                val requestParameters = RequestParameters(fromPlace = origin, toPlace = destination)
+                start = System.currentTimeMillis()
+                val planApi = PlanApi(url, requestParameters)
+                emit(makePlanRequest(planApi, i))
+                i++
+            }
         }
         runBlocking {
             planFlow.collect {
+                val time = System.currentTimeMillis() - start
                 println(it)
+                println("Time: $time ms")
             }
         }
     }
 
-    private suspend fun makePlanRequest(planApi: PlanApi): Planner = suspendCancellableCoroutine { cont ->
+    private fun makePlanFlow() {
+        val dataFlow = chicagoTncData.asFlow()
+        runBlocking {
+            dataFlow
+                .filter {
+                    it.pickupCentroidLatitude != 0.0
+                    it.pickupCentroidLongitude != 0.0
+                    it.dropoffCentroidLatitude != 0.0
+                    it.dropoffCentroidLongitude != 0.0
+                }
+                .onEach {
+                    val origin = GtfsUtils.latLong(
+                        it.pickupCentroidLatitude,
+                        it.pickupCentroidLongitude
+                    )
+                    val destination = GtfsUtils.latLong(
+                        it.dropoffCentroidLongitude,
+                        it.dropoffCentroidLongitude
+                    )
+
+                    val requestParameters = RequestParameters(fromPlace = origin, toPlace = destination)
+                    val planApi = PlanApi(url, requestParameters)
+                    makePlanRequest(planApi, chicagoTncData.indexOf(it))
+
+                }.flowOn(Dispatchers.IO)
+                .collect {
+                    //val time = System.currentTimeMillis()
+                    //println("Index" + chicagoTncData.indexOf(it))
+                }
+        }
+    }
+
+    private suspend fun makePlanRequest(planApi: PlanApi, i: Int): Planner = suspendCancellableCoroutine { cont ->
         planApi.getPlan({
+            println(it)
+            println("record $i")
             cont.resume(it, null)
         }, {
             if (it != null)
