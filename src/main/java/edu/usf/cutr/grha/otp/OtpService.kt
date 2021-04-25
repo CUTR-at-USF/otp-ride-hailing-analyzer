@@ -48,7 +48,18 @@ class OtpService(
                     }
                 }
                 .collect {
-                    println(it.additionalProperties)
+                    var chicagoTnc = chicagoTncData[it.additionalProperties["Index"] as Int]
+                    // TODO get total travel time from Itinerary
+
+                    // TODO get total travel time by walk or bus from Itinerary
+
+                    // TODO get total distance by looping through List<Legs>
+
+                    // TODO get Altitude change from Itinerary
+
+                    // TODO get number of transfers from Itinerary
+
+                    // TODO get Traverse Modes from List<legs>
                 }
         }
     }
