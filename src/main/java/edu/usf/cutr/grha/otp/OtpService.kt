@@ -64,7 +64,7 @@ class OtpService(
     }
 
     private fun isValidLocation(originLat: Double, originLong: Double, destLat: Double, destLong: Double): Boolean {
-        return originLat != 0.0 || originLong != 0.0 ||
-                destLat != 0.0 || destLong != 0.0
+        return originLat != 0.0 && originLong != 0.0 &&
+                destLat != 0.0 && destLong != 0.0
     }
 }
