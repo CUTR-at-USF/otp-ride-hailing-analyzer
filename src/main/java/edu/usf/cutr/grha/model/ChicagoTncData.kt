@@ -16,6 +16,7 @@
 package edu.usf.cutr.grha.model
 
 import com.univocity.parsers.annotations.Parsed
+import edu.usf.cutr.otp.plan.model.core.TraverseModes
 
 data class ChicagoTncData
 (
@@ -38,4 +39,11 @@ data class ChicagoTncData
     @Parsed val pickupCentroidLongitude: Double = 0.0,
     @Parsed val dropoffCentroidLatitude: Double = 0.0,
     @Parsed val dropoffCentroidLongitude: Double = 0.0,
+    @Parsed var totalTravelTime: Int? = 0,
+    @Parsed var walkTime: Int? = 0,
+    @Parsed var transitTime: Int? = 0,
+    @Parsed var totalDistance: Double? = 0.0,
+    @Parsed var altitudeChange: Double? = 0.0,
+    @Parsed var transfers: Int? = 0,
+    @Parsed var Modes: List<TraverseModes>? = null
 )
