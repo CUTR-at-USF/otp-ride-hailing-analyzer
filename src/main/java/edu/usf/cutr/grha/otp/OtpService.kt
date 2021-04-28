@@ -5,6 +5,7 @@ import edu.usf.cutr.grha.utils.GtfsUtils
 import edu.usf.cutr.otp.plan.api.PlanApi
 import edu.usf.cutr.otp.plan.model.Planner
 import edu.usf.cutr.otp.plan.model.RequestParameters
+import edu.usf.cutr.otp.plan.model.core.TraverseModes
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -93,9 +94,111 @@ class OtpService(
         planner: Planner,
         index: Int
     ): ChicagoTncData {
+
         val legs = planner.plan?.itineraries?.get(index)?.legs
-        if (legs != null) {
-            legs.forEach {
+        legs?.forEach {
+            when (it.mode) {
+                TraverseModes.WALK.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.walkTime1 = chicagoTncData.walkTime1?.plus(it.duration!!)
+                            chicagoTncData.walkDistance1 = chicagoTncData.walkDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.walkTime2 = chicagoTncData.walkTime2?.plus(it.duration!!)
+                            chicagoTncData.walkDistance2 = chicagoTncData.walkDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.walkTime3 = chicagoTncData.walkTime3?.plus(it.duration!!)
+                            chicagoTncData.walkDistance3 = chicagoTncData.walkDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.TRANSIT.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.transitTime1 = chicagoTncData.transitTime1?.plus(it.duration!!)
+                            chicagoTncData.transitDistance1 = chicagoTncData.transitDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.transitTime2 = chicagoTncData.transitTime2?.plus(it.duration!!)
+                            chicagoTncData.transitDistance2 = chicagoTncData.transitDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.transitTime3 = chicagoTncData.transitTime3?.plus(it.duration!!)
+                            chicagoTncData.transitDistance3 = chicagoTncData.transitDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.BUS.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.busTime1 = chicagoTncData.busTime1?.plus(it.duration!!)
+                            chicagoTncData.busDistance1 = chicagoTncData.busDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.busTime2 = chicagoTncData.busTime2?.plus(it.duration!!)
+                            chicagoTncData.busDistance2 = chicagoTncData.busDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.busTime3 = chicagoTncData.busTime3?.plus(it.duration!!)
+                            chicagoTncData.busDistance3 = chicagoTncData.busDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.BICYCLE.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.bicycleTime1 = chicagoTncData.bicycleTime1?.plus(it.duration!!)
+                            chicagoTncData.bicycleDistance1 = chicagoTncData.bicycleDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.bicycleTime2 = chicagoTncData.bicycleTime2?.plus(it.duration!!)
+                            chicagoTncData.bicycleDistance2 = chicagoTncData.bicycleDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.bicycleTime3 = chicagoTncData.bicycleTime3?.plus(it.duration!!)
+                            chicagoTncData.bicycleDistance3 = chicagoTncData.bicycleDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.BICYCLE_RENT.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.bicycleRentTime1 = chicagoTncData.bicycleRentTime1?.plus(it.duration!!)
+                            chicagoTncData.bicycleRentDistance1 =
+                                chicagoTncData.bicycleRentDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.bicycleRentTime2 = chicagoTncData.bicycleRentTime2?.plus(it.duration!!)
+                            chicagoTncData.bicycleRentDistance2 =
+                                chicagoTncData.bicycleRentDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.bicycleRentTime3 = chicagoTncData.bicycleRentTime3?.plus(it.duration!!)
+                            chicagoTncData.bicycleRentDistance3 =
+                                chicagoTncData.bicycleRentDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.BICYCLE_PARK.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.bicycleParkTime1 = chicagoTncData.bicycleParkTime1?.plus(it.duration!!)
+                            chicagoTncData.bicycleParkDistance1 =
+                                chicagoTncData.bicycleParkDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.bicycleParkTime2 = chicagoTncData.bicycleParkTime2?.plus(it.duration!!)
+                            chicagoTncData.bicycleParkDistance2 =
+                                chicagoTncData.bicycleParkDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.bicycleParkTime3 = chicagoTncData.bicycleParkTime3?.plus(it.duration!!)
+                            chicagoTncData.bicycleParkDistance3 = chicagoTncData.bicycleDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
 
             }
         }
