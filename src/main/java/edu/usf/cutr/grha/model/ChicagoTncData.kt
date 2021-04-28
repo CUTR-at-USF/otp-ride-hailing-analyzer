@@ -39,6 +39,7 @@ data class ChicagoTncData
     @Parsed val dropoffCentroidLatitude: Double = 0.0,
     @Parsed val dropoffCentroidLongitude: Double = 0.0,
 
+    @Parsed var optimizeType: String? = null,
     @Parsed var totalTravelTime1: Int? = 0,
     @Parsed var walkTime1: Int? = 0,
     @Parsed var transitTime1: Int? = 0,
