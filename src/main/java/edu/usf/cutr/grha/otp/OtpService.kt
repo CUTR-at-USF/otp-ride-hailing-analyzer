@@ -195,10 +195,192 @@ class OtpService(
                         }
                         3 -> {
                             chicagoTncData.bicycleParkTime3 = chicagoTncData.bicycleParkTime3?.plus(it.duration!!)
-                            chicagoTncData.bicycleParkDistance3 = chicagoTncData.bicycleDistance3?.plus(it.distance!!)
+                            chicagoTncData.bicycleParkDistance3 =
+                                chicagoTncData.bicycleParkDistance3?.plus(it.distance!!)
                         }
                     }
                 }
+                TraverseModes.CAR.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.carTime1 = chicagoTncData.carTime1?.plus(it.duration!!)
+                            chicagoTncData.carDistance1 =
+                                chicagoTncData.carDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.carTime2 = chicagoTncData.carTime2?.plus(it.duration!!)
+                            chicagoTncData.carDistance2 =
+                                chicagoTncData.carDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.carTime3 = chicagoTncData.carTime3?.plus(it.duration!!)
+                            chicagoTncData.carDistance3 = chicagoTncData.carDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.CAR_PARK.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.carParkTime1 = chicagoTncData.carParkTime1?.plus(it.duration!!)
+                            chicagoTncData.carParkDistance1 =
+                                chicagoTncData.carParkDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.carParkTime2 = chicagoTncData.carParkTime2?.plus(it.duration!!)
+                            chicagoTncData.carParkDistance2 =
+                                chicagoTncData.carParkDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.carParkTime3 = chicagoTncData.carParkTime3?.plus(it.duration!!)
+                            chicagoTncData.carParkDistance3 = chicagoTncData.carParkDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.TRAM.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.tramTime1 = chicagoTncData.tramTime1?.plus(it.duration!!)
+                            chicagoTncData.tramDistance1 =
+                                chicagoTncData.tramDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.tramTime2 = chicagoTncData.tramTime2?.plus(it.duration!!)
+                            chicagoTncData.tramDistance2 =
+                                chicagoTncData.tramDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.tramTime3 = chicagoTncData.tramTime3?.plus(it.duration!!)
+                            chicagoTncData.tramDistance3 = chicagoTncData.tramDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.SUBWAY.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.subwayTime1 = chicagoTncData.subwayTime1?.plus(it.duration!!)
+                            chicagoTncData.subwayDistance1 =
+                                chicagoTncData.subwayDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.subwayTime2 = chicagoTncData.subwayTime2?.plus(it.duration!!)
+                            chicagoTncData.subwayDistance2 =
+                                chicagoTncData.subwayDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.subwayTime3 = chicagoTncData.subwayTime3?.plus(it.duration!!)
+                            chicagoTncData.subwayDistance3 = chicagoTncData.subwayDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.RAIL.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.railTime1 = chicagoTncData.railTime1?.plus(it.duration!!)
+                            chicagoTncData.railDistance1 =
+                                chicagoTncData.railDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.railTime2 = chicagoTncData.railTime2?.plus(it.duration!!)
+                            chicagoTncData.railDistance2 =
+                                chicagoTncData.railDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.railTime3 = chicagoTncData.railTime3?.plus(it.duration!!)
+                            chicagoTncData.railDistance3 = chicagoTncData.railDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.CABLE_CAR.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.cableCarTime1 = chicagoTncData.cableCarTime1?.plus(it.duration!!)
+                            chicagoTncData.cableCarDistance1 =
+                                chicagoTncData.cableCarDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.cableCarTime2 = chicagoTncData.cableCarTime2?.plus(it.duration!!)
+                            chicagoTncData.cableCarDistance2 =
+                                chicagoTncData.cableCarDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.cableCarTime3 = chicagoTncData.cableCarTime3?.plus(it.duration!!)
+                            chicagoTncData.cableCarDistance3 = chicagoTncData.cableCarDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.FERRY.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.ferryTime1 = chicagoTncData.ferryTime1?.plus(it.duration!!)
+                            chicagoTncData.ferryDistance1 =
+                                chicagoTncData.ferryDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.ferryTime2 = chicagoTncData.ferryTime2?.plus(it.duration!!)
+                            chicagoTncData.ferryDistance2 =
+                                chicagoTncData.ferryDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.ferryTime3 = chicagoTncData.ferryTime3?.plus(it.duration!!)
+                            chicagoTncData.ferryDistance3 = chicagoTncData.ferryDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.GONDOLA.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.gondolaTime1 = chicagoTncData.gondolaTime1?.plus(it.duration!!)
+                            chicagoTncData.gondolaDistance1 =
+                                chicagoTncData.gondolaDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.gondolaTime2 = chicagoTncData.gondolaTime2?.plus(it.duration!!)
+                            chicagoTncData.gondolaDistance2 =
+                                chicagoTncData.gondolaDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.gondolaTime3 = chicagoTncData.gondolaTime3?.plus(it.duration!!)
+                            chicagoTncData.gondolaDistance3 = chicagoTncData.gondolaDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.FUNICULAR.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.funicularTime1 = chicagoTncData.funicularTime1?.plus(it.duration!!)
+                            chicagoTncData.funicularDistance1 =
+                                chicagoTncData.funicularDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.funicularTime2 = chicagoTncData.funicularTime2?.plus(it.duration!!)
+                            chicagoTncData.funicularDistance2 =
+                                chicagoTncData.funicularDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.funicularTime3 = chicagoTncData.funicularTime3?.plus(it.duration!!)
+                            chicagoTncData.funicularDistance3 = chicagoTncData.funicularDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+                TraverseModes.AIRPLANE.toString() -> {
+                    when (index) {
+                        1 -> {
+                            chicagoTncData.airplaneTime1 = chicagoTncData.airplaneTime1?.plus(it.duration!!)
+                            chicagoTncData.airplaneDistance1 =
+                                chicagoTncData.airplaneDistance1?.plus(it.distance!!)
+                        }
+                        2 -> {
+                            chicagoTncData.airplaneTime2 = chicagoTncData.airplaneTime2?.plus(it.duration!!)
+                            chicagoTncData.airplaneDistance2 =
+                                chicagoTncData.airplaneDistance2?.plus(it.distance!!)
+                        }
+                        3 -> {
+                            chicagoTncData.airplaneTime3 = chicagoTncData.airplaneTime3?.plus(it.duration!!)
+                            chicagoTncData.airplaneDistance3 = chicagoTncData.airplaneDistance3?.plus(it.distance!!)
+                        }
+                    }
+                }
+
 
             }
         }
