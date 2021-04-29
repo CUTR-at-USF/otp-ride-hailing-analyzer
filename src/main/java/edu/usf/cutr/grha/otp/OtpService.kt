@@ -64,33 +64,38 @@ class OtpService(
                         chicagoTnc.totalTravelTime1 = it.plan?.itineraries?.get(0)?.duration
                         chicagoTnc.totalDistance1 = calculateTotalDistance(it, 0)
                         chicagoTnc.totalWaitTime1 = it.plan?.itineraries?.get(0)?.waitingTime
+                        chicagoTnc.altitudeChange1 = getAltitudeChange(it, 0)
+                        chicagoTnc.transfers1 = it.plan?.itineraries?.get(0)?.transfers
                         chicagoTnc = fillTimeAndDistanceInformationForModes(chicagoTnc, it, 0)
+
+                        // to remove extra commas
+                        chicagoTnc.Modes1 = chicagoTnc.Modes1?.substring(0, chicagoTnc.Modes1?.length?.minus(2)!!)
                     }
                     if (itineraries.size > 1) {
                         chicagoTnc.totalTravelTime2 = it.plan?.itineraries?.get(1)?.duration
                         chicagoTnc.totalDistance2 = calculateTotalDistance(it, 1)
                         chicagoTnc.totalWaitTime2 = it.plan?.itineraries?.get(1)?.waitingTime
+                        chicagoTnc.altitudeChange2 = getAltitudeChange(it, 1)
+                        chicagoTnc.transfers2 = it.plan?.itineraries?.get(1)?.transfers
                         chicagoTnc = fillTimeAndDistanceInformationForModes(chicagoTnc, it, 1)
+
+                        // to remove extra commas
+                        chicagoTnc.Modes2 = chicagoTnc.Modes2?.substring(0, chicagoTnc.Modes2?.length?.minus(2)!!)
 
                     }
                     if (itineraries.size > 2) {
                         chicagoTnc.totalTravelTime3 = it.plan?.itineraries?.get(2)?.duration
                         chicagoTnc.totalDistance3 = calculateTotalDistance(it, 2)
                         chicagoTnc.totalWaitTime3 = it.plan?.itineraries?.get(2)?.waitingTime
+                        chicagoTnc.altitudeChange3 = getAltitudeChange(it, 2)
+                        chicagoTnc.transfers3 = it.plan?.itineraries?.get(2)?.transfers
                         chicagoTnc = fillTimeAndDistanceInformationForModes(chicagoTnc, it, 2)
+
+                        // to remove extra commas
+                        chicagoTnc.Modes3 = chicagoTnc.Modes3?.substring(0, chicagoTnc.Modes3?.length?.minus(2)!!)
                     }
 
                     println(chicagoTnc)
-
-                    // get total travel time by walk or bus from Itinerary
-                    // TODO get total distance by looping through List<Legs>
-
-                    // TODO get Altitude change from Itinerary
-
-                    // get number of transfers from Itinerary
-
-
-                    // TODO get Traverse Modes from List<legs>
                 }
         }
     }
@@ -119,6 +124,17 @@ class OtpService(
         return distance
     }
 
+    private fun getAltitudeChange(planner: Planner, index: Int): Double {
+        val elevationLost = planner.plan?.itineraries?.get(index)?.elevationLost
+        val elevationGained = planner.plan?.itineraries?.get(index)?.elevationGained
+
+        return if (elevationLost!! > 0) {
+            elevationLost * -1
+        } else {
+            elevationGained!!
+        }
+    }
+
     private fun fillTimeAndDistanceInformationForModes(
         chicagoTncData: ChicagoTncData,
         planner: Planner,
@@ -127,6 +143,14 @@ class OtpService(
 
         val legs = planner.plan?.itineraries?.get(index)?.legs
         legs?.forEach {
+            // append travel modes
+            when (index + 1) {
+                1 -> chicagoTncData.Modes1 = chicagoTncData.Modes1.plus(it.mode.toString() + ", ")
+                2 -> chicagoTncData.Modes2 = chicagoTncData.Modes2.plus(it.mode.toString() + ", ")
+                3 -> chicagoTncData.Modes3 = chicagoTncData.Modes3.plus(it.mode.toString() + ", ")
+            }
+
+            // calculate time and distance per mode
             when (it.mode) {
                 TraverseModes.WALK.toString() -> {
                     when (index + 1) {

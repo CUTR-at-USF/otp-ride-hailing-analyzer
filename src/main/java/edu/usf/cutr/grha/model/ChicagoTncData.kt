@@ -80,7 +80,7 @@ data class ChicagoTncData
 
     @Parsed var altitudeChange1: Double? = 0.0,
     @Parsed var transfers1: Int? = 0,
-    @Parsed var Modes1: String? = null,
+    @Parsed var Modes1: String? = "",
 
     @Parsed var totalTravelTime2: Int? = 0,
     @Parsed var totalDistance2: Double? = 0.0,
@@ -123,7 +123,7 @@ data class ChicagoTncData
 
     @Parsed var altitudeChange2: Double? = 0.0,
     @Parsed var transfers2: Int? = 0,
-    @Parsed var Modes2: String? = null,
+    @Parsed var Modes2: String? = "",
 
     @Parsed var totalTravelTime3: Int? = 0,
     @Parsed var totalDistance3: Double? = 0.0,
@@ -166,5 +166,5 @@ data class ChicagoTncData
 
     @Parsed var altitudeChange3: Double? = 0.0,
     @Parsed var transfers3: Int? = 0,
-    @Parsed var Modes3: String? = null
+    @Parsed var Modes3: String? = ""
 )
