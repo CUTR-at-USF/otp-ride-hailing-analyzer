@@ -56,10 +56,31 @@ class OtpService(
                     }
                 }
                 .collect {
-                    val chicagoTnc = chicagoTncData[it.additionalProperties["Index"] as Int]
-                    println(it)
+                    var chicagoTnc = chicagoTncData[it.additionalProperties["Index"] as Int]
 
-                    // get total travel time from Itinerary
+                    // get total travel time and distance from Itinerary
+                    val itineraries = it.plan?.itineraries
+                    if (itineraries?.size!! > 0) {
+                        chicagoTnc.totalTravelTime1 = it.plan?.itineraries?.get(0)?.duration
+                        chicagoTnc.totalDistance1 = calculateTotalDistance(it, 0)
+                        chicagoTnc.totalWaitTime1 = it.plan?.itineraries?.get(0)?.waitingTime
+                        chicagoTnc = fillTimeAndDistanceInformationForModes(chicagoTnc, it, 0)
+                    }
+                    if (itineraries.size > 1) {
+                        chicagoTnc.totalTravelTime2 = it.plan?.itineraries?.get(1)?.duration
+                        chicagoTnc.totalDistance2 = calculateTotalDistance(it, 1)
+                        chicagoTnc.totalWaitTime2 = it.plan?.itineraries?.get(1)?.waitingTime
+                        chicagoTnc = fillTimeAndDistanceInformationForModes(chicagoTnc, it, 1)
+
+                    }
+                    if (itineraries.size > 2) {
+                        chicagoTnc.totalTravelTime3 = it.plan?.itineraries?.get(2)?.duration
+                        chicagoTnc.totalDistance3 = calculateTotalDistance(it, 2)
+                        chicagoTnc.totalWaitTime3 = it.plan?.itineraries?.get(2)?.waitingTime
+                        chicagoTnc = fillTimeAndDistanceInformationForModes(chicagoTnc, it, 2)
+                    }
+
+                    println(chicagoTnc)
 
                     // get total travel time by walk or bus from Itinerary
                     // TODO get total distance by looping through List<Legs>
@@ -89,6 +110,15 @@ class OtpService(
                 destLat != 0.0 && destLong != 0.0
     }
 
+    private fun calculateTotalDistance(planner: Planner, index: Int): Double {
+        val legs = planner.plan?.itineraries?.get(index)?.legs
+        var distance = 0.0
+        legs?.forEach {
+            distance = distance.plus(it.distance!!)
+        }
+        return distance
+    }
+
     private fun fillTimeAndDistanceInformationForModes(
         chicagoTncData: ChicagoTncData,
         planner: Planner,
@@ -99,7 +129,7 @@ class OtpService(
         legs?.forEach {
             when (it.mode) {
                 TraverseModes.WALK.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.walkTime1 = chicagoTncData.walkTime1?.plus(it.duration!!)
                             chicagoTncData.walkDistance1 = chicagoTncData.walkDistance1?.plus(it.distance!!)
@@ -115,7 +145,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.TRANSIT.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.transitTime1 = chicagoTncData.transitTime1?.plus(it.duration!!)
                             chicagoTncData.transitDistance1 = chicagoTncData.transitDistance1?.plus(it.distance!!)
@@ -131,7 +161,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.BUS.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.busTime1 = chicagoTncData.busTime1?.plus(it.duration!!)
                             chicagoTncData.busDistance1 = chicagoTncData.busDistance1?.plus(it.distance!!)
@@ -147,7 +177,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.BICYCLE.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.bicycleTime1 = chicagoTncData.bicycleTime1?.plus(it.duration!!)
                             chicagoTncData.bicycleDistance1 = chicagoTncData.bicycleDistance1?.plus(it.distance!!)
@@ -163,7 +193,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.BICYCLE_RENT.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.bicycleRentTime1 = chicagoTncData.bicycleRentTime1?.plus(it.duration!!)
                             chicagoTncData.bicycleRentDistance1 =
@@ -182,7 +212,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.BICYCLE_PARK.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.bicycleParkTime1 = chicagoTncData.bicycleParkTime1?.plus(it.duration!!)
                             chicagoTncData.bicycleParkDistance1 =
@@ -201,7 +231,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.CAR.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.carTime1 = chicagoTncData.carTime1?.plus(it.duration!!)
                             chicagoTncData.carDistance1 =
@@ -219,7 +249,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.CAR_PARK.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.carParkTime1 = chicagoTncData.carParkTime1?.plus(it.duration!!)
                             chicagoTncData.carParkDistance1 =
@@ -237,7 +267,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.TRAM.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.tramTime1 = chicagoTncData.tramTime1?.plus(it.duration!!)
                             chicagoTncData.tramDistance1 =
@@ -255,7 +285,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.SUBWAY.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.subwayTime1 = chicagoTncData.subwayTime1?.plus(it.duration!!)
                             chicagoTncData.subwayDistance1 =
@@ -273,7 +303,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.RAIL.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.railTime1 = chicagoTncData.railTime1?.plus(it.duration!!)
                             chicagoTncData.railDistance1 =
@@ -291,7 +321,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.CABLE_CAR.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.cableCarTime1 = chicagoTncData.cableCarTime1?.plus(it.duration!!)
                             chicagoTncData.cableCarDistance1 =
@@ -309,7 +339,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.FERRY.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.ferryTime1 = chicagoTncData.ferryTime1?.plus(it.duration!!)
                             chicagoTncData.ferryDistance1 =
@@ -327,7 +357,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.GONDOLA.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.gondolaTime1 = chicagoTncData.gondolaTime1?.plus(it.duration!!)
                             chicagoTncData.gondolaDistance1 =
@@ -345,7 +375,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.FUNICULAR.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.funicularTime1 = chicagoTncData.funicularTime1?.plus(it.duration!!)
                             chicagoTncData.funicularDistance1 =
@@ -363,7 +393,7 @@ class OtpService(
                     }
                 }
                 TraverseModes.AIRPLANE.toString() -> {
-                    when (index) {
+                    when (index + 1) {
                         1 -> {
                             chicagoTncData.airplaneTime1 = chicagoTncData.airplaneTime1?.plus(it.duration!!)
                             chicagoTncData.airplaneDistance1 =

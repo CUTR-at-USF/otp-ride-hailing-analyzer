@@ -43,6 +43,7 @@ data class ChicagoTncData
 
     @Parsed var totalTravelTime1: Int? = 0,
     @Parsed var totalDistance1: Double? = 0.0,
+    @Parsed var totalWaitTime1: Int? = 0,
     @Parsed var walkTime1: Double? = 0.0,
     @Parsed var busTime1: Double? = 0.0,
     @Parsed var transitTime1: Double? = 0.0,
@@ -83,6 +84,8 @@ data class ChicagoTncData
 
     @Parsed var totalTravelTime2: Int? = 0,
     @Parsed var totalDistance2: Double? = 0.0,
+    @Parsed var totalWaitTime2: Int? = 0,
+
 
     @Parsed var walkTime2: Double? = 0.0,
     @Parsed var busTime2: Double? = 0.0,
@@ -124,6 +127,8 @@ data class ChicagoTncData
 
     @Parsed var totalTravelTime3: Int? = 0,
     @Parsed var totalDistance3: Double? = 0.0,
+    @Parsed var totalWaitTime3: Int? = 0,
+
 
     @Parsed var walkTime3: Double? = 0.0,
     @Parsed var busTime3: Double? = 0.0,
