@@ -18,11 +18,11 @@ class OtpService(
     private var url: String
 ) {
 
-    fun call() {
-        getPlanData()
+    fun call(concurrency: Int = 10) {
+        getPlanData(concurrency)
     }
 
-    private fun getPlanData() {
+    private fun getPlanData(concurrency: Int) {
         val output = mutableListOf<ChicagoTncData>()
         // val dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
         runBlocking {
@@ -36,7 +36,7 @@ class OtpService(
                         it.dropoffCentroidLongitude
                     )
                 }
-                .flatMapMerge(concurrency = 10) {
+                .flatMapMerge(concurrency = concurrency) {
                     flow {
                         val origin = GtfsUtils.latLong(
                             it.pickupCentroidLatitude,

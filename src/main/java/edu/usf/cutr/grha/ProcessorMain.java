@@ -17,7 +17,6 @@ package edu.usf.cutr.grha;
 
 import edu.usf.cutr.grha.io.ChicagoTncParser;
 import edu.usf.cutr.grha.io.GPSTestExtendedHeaderParser;
-import edu.usf.cutr.grha.io.GPSTestParser;
 import edu.usf.cutr.grha.io.TncToGtfsWriter;
 import edu.usf.cutr.grha.model.ChicagoTncData;
 import edu.usf.cutr.grha.otp.OtpService;
@@ -31,35 +30,36 @@ import java.util.List;
 public class ProcessorMain {
 
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("The first command-line parameter should be the GPSTest data filename with simple headers," +
-                    " the 2nd parameter should be the filename of the Chicago dataset," +
-                    " and 3rd parameter should be the folder where you'd like to export your GTFS dataset (Optional). ");
+        if (args.length < 1) {
+            System.out.println(" The first command-line parameter should be the filename of the Chicago dataset," +
+                    " 2nd parameter should be the folder where you'd like to export your GTFS dataset (Optional), " +
+                    " and the 3rd parameter should be the number of request you'd like to process concurrently (Optional). ");
             System.exit(1);
         }
 
         try {
-            GPSTestParser gpsTestParser = new GPSTestParser(new FileInputStream(args[0]));
-            System.out.println("*** GPSTest data ***");
-            IOUtils.printLocations(gpsTestParser.parseFile());
-        } catch (FileNotFoundException fileNotFoundException) {
-            System.out.println("GPS Test file not found. Please check the path");
-        }
-
-        try {
             System.out.println("*** Chicago open TNC data ***");
-            ChicagoTncParser chicagoTncParser = new ChicagoTncParser(new FileInputStream(args[1]));
-            // IOUtils.printChicagoTncData(chicagoTncParser.parseFile());
+            ChicagoTncParser chicagoTncParser = new ChicagoTncParser(new FileInputStream(args[0]));
             List<ChicagoTncData> chicagoTncDataList = chicagoTncParser.parseFile();
-            if (args.length == 3) {
-                new File(args[2]).mkdirs();
-                new TncToGtfsWriter(args[2]).write(chicagoTncDataList);
+            if (args.length == 3 || args.length == 2) {
+                new File(args[1]).mkdirs();
+                new TncToGtfsWriter(args[1]).write(chicagoTncDataList);
+                if (args.length > 2) {
+                    new OtpService(chicagoTncDataList, "http://localhost:8080/otp/routers/default/plan").call(
+                            Integer.parseInt(args[2]));
+                } else {
+                    new OtpService(chicagoTncDataList, "http://localhost:8080/otp/routers/default/plan").call(
+                            Integer.parseInt("10"));
+                }
             } else {
                 String filePath = "output";
                 new File(filePath).mkdirs();
                 new TncToGtfsWriter(filePath).write(chicagoTncDataList);
+                new OtpService(chicagoTncDataList, "http://localhost:8080/otp/routers/default/plan").call(
+                        Integer.parseInt("10")
+                );
             }
-            new OtpService(chicagoTncDataList, "http://localhost:8080/otp/routers/default/plan").call();
+
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println("Chicago Data file not found. Please check the path");
         }
