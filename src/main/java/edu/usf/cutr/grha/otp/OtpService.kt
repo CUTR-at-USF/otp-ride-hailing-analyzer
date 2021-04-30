@@ -24,6 +24,7 @@ class OtpService(
 
     private fun getPlanData() {
         val output = mutableListOf<ChicagoTncData>()
+        // val dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
         runBlocking {
             chicagoTncData
                 .asFlow()
@@ -48,6 +49,11 @@ class OtpService(
                         val startDateTime = GtfsUtils.getDateFromTimeStamp(it.tripStartTimeStamp, "M/dd/yyyy H:mm")
                         val date = startDateTime.format(DateTimeFormatter.ofPattern("MM-dd-yyyy"))
                         val time = startDateTime.format(DateTimeFormatter.ofPattern("h:mma"))
+
+//                        val zonedDateTime = ZonedDateTime.of(startDateTime, ZoneId.of("America/Chicago"))
+//                        zonedDateTime.format(dateTimeFormatter)
+//
+//                        println(zonedDateTime)
 
                         val requestParameters = RequestParameters(
                             fromPlace = origin, toPlace = destination,
