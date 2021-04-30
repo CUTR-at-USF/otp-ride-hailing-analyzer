@@ -16,11 +16,9 @@
 package edu.usf.cutr.grha;
 
 import edu.usf.cutr.grha.io.ChicagoTncParser;
-import edu.usf.cutr.grha.io.GPSTestExtendedHeaderParser;
 import edu.usf.cutr.grha.io.TncToGtfsWriter;
 import edu.usf.cutr.grha.model.ChicagoTncData;
 import edu.usf.cutr.grha.otp.OtpService;
-import edu.usf.cutr.grha.utils.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,28 +47,19 @@ public class ProcessorMain {
                             Integer.parseInt(args[2]));
                 } else {
                     new OtpService(chicagoTncDataList, "http://localhost:8080/otp/routers/default/plan").call(
-                            Integer.parseInt("10"));
+                            10);
                 }
             } else {
                 String filePath = "output";
                 new File(filePath).mkdirs();
                 new TncToGtfsWriter(filePath).write(chicagoTncDataList);
                 new OtpService(chicagoTncDataList, "http://localhost:8080/otp/routers/default/plan").call(
-                        Integer.parseInt("10")
+                        10
                 );
             }
 
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.println("Chicago Data file not found. Please check the path");
         }
-    }
-
-    /**
-     * Currently unused - parses the GPSTest file with the additional comments in the CSV header
-     */
-    public static void demoParsingWithExtendedHeader() throws FileNotFoundException {
-        GPSTestExtendedHeaderParser GPSTestExtendedHeaderParser = new GPSTestExtendedHeaderParser(
-                new FileInputStream("src/test/resources/gnss_log_2021_02_05_13_20_58.txt"));
-        IOUtils.printLocations(GPSTestExtendedHeaderParser.parseFile());
     }
 }
