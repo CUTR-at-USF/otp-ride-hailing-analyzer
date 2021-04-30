@@ -44,6 +44,10 @@ data class ChicagoTncData
     @Parsed var totalTravelTime1: Int? = 0,
     @Parsed var totalDistance1: Double? = 0.0,
     @Parsed var totalWaitTime1: Int? = 0,
+    @Parsed var altitudeChange1: Double? = 0.0,
+    @Parsed var transfers1: Int? = 0,
+    @Parsed var Modes1: String? = "",
+
     @Parsed var walkTime1: Double? = 0.0,
     @Parsed var busTime1: Double? = 0.0,
     @Parsed var transitTime1: Double? = 0.0,
@@ -55,11 +59,7 @@ data class ChicagoTncData
     @Parsed var tramTime1: Double? = 0.0,
     @Parsed var subwayTime1: Double? = 0.0,
     @Parsed var railTime1: Double? = 0.0,
-    @Parsed var cableCarTime1: Double? = 0.0,
-    @Parsed var ferryTime1: Double? = 0.0,
-    @Parsed var gondolaTime1: Double? = 0.0,
-    @Parsed var funicularTime1: Double? = 0.0,
-    @Parsed var airplaneTime1: Double? = 0.0,
+
 
     @Parsed var walkDistance1: Double? = 0.0,
     @Parsed var busDistance1: Double? = 0.0,
@@ -72,20 +72,14 @@ data class ChicagoTncData
     @Parsed var tramDistance1: Double? = 0.0,
     @Parsed var subwayDistance1: Double? = 0.0,
     @Parsed var railDistance1: Double? = 0.0,
-    @Parsed var cableCarDistance1: Double? = 0.0,
-    @Parsed var ferryDistance1: Double? = 0.0,
-    @Parsed var gondolaDistance1: Double? = 0.0,
-    @Parsed var funicularDistance1: Double? = 0.0,
-    @Parsed var airplaneDistance1: Double? = 0.0,
 
-    @Parsed var altitudeChange1: Double? = 0.0,
-    @Parsed var transfers1: Int? = 0,
-    @Parsed var Modes1: String? = "",
 
     @Parsed var totalTravelTime2: Int? = 0,
     @Parsed var totalDistance2: Double? = 0.0,
     @Parsed var totalWaitTime2: Int? = 0,
-
+    @Parsed var altitudeChange2: Double? = 0.0,
+    @Parsed var transfers2: Int? = 0,
+    @Parsed var Modes2: String? = "",
 
     @Parsed var walkTime2: Double? = 0.0,
     @Parsed var busTime2: Double? = 0.0,
@@ -98,11 +92,7 @@ data class ChicagoTncData
     @Parsed var tramTime2: Double? = 0.0,
     @Parsed var subwayTime2: Double? = 0.0,
     @Parsed var railTime2: Double? = 0.0,
-    @Parsed var cableCarTime2: Double? = 0.0,
-    @Parsed var ferryTime2: Double? = 0.0,
-    @Parsed var gondolaTime2: Double? = 0.0,
-    @Parsed var funicularTime2: Double? = 0.0,
-    @Parsed var airplaneTime2: Double? = 0.0,
+
 
     @Parsed var walkDistance2: Double? = 0.0,
     @Parsed var busDistance2: Double? = 0.0,
@@ -115,20 +105,13 @@ data class ChicagoTncData
     @Parsed var tramDistance2: Double? = 0.0,
     @Parsed var subwayDistance2: Double? = 0.0,
     @Parsed var railDistance2: Double? = 0.0,
-    @Parsed var cableCarDistance2: Double? = 0.0,
-    @Parsed var ferryDistance2: Double? = 0.0,
-    @Parsed var gondolaDistance2: Double? = 0.0,
-    @Parsed var funicularDistance2: Double? = 0.0,
-    @Parsed var airplaneDistance2: Double? = 0.0,
-
-    @Parsed var altitudeChange2: Double? = 0.0,
-    @Parsed var transfers2: Int? = 0,
-    @Parsed var Modes2: String? = "",
 
     @Parsed var totalTravelTime3: Int? = 0,
     @Parsed var totalDistance3: Double? = 0.0,
     @Parsed var totalWaitTime3: Int? = 0,
-
+    @Parsed var altitudeChange3: Double? = 0.0,
+    @Parsed var transfers3: Int? = 0,
+    @Parsed var Modes3: String? = "",
 
     @Parsed var walkTime3: Double? = 0.0,
     @Parsed var busTime3: Double? = 0.0,
@@ -141,11 +124,7 @@ data class ChicagoTncData
     @Parsed var tramTime3: Double? = 0.0,
     @Parsed var subwayTime3: Double? = 0.0,
     @Parsed var railTime3: Double? = 0.0,
-    @Parsed var cableCarTime3: Double? = 0.0,
-    @Parsed var ferryTime3: Double? = 0.0,
-    @Parsed var gondolaTime3: Double? = 0.0,
-    @Parsed var funicularTime3: Double? = 0.0,
-    @Parsed var airplaneTime3: Double? = 0.0,
+
 
     @Parsed var walkDistance3: Double? = 0.0,
     @Parsed var busDistance3: Double? = 0.0,
@@ -158,13 +137,39 @@ data class ChicagoTncData
     @Parsed var tramDistance3: Double? = 0.0,
     @Parsed var subwayDistance3: Double? = 0.0,
     @Parsed var railDistance3: Double? = 0.0,
+
+
+    //junk
+    @Parsed var cableCarDistance1: Double? = 0.0,
+    @Parsed var ferryDistance1: Double? = 0.0,
+    @Parsed var gondolaDistance1: Double? = 0.0,
+    @Parsed var funicularDistance1: Double? = 0.0,
+    @Parsed var airplaneDistance1: Double? = 0.0,
+    @Parsed var cableCarTime1: Double? = 0.0,
+    @Parsed var ferryTime1: Double? = 0.0,
+    @Parsed var gondolaTime1: Double? = 0.0,
+    @Parsed var funicularTime1: Double? = 0.0,
+    @Parsed var airplaneTime1: Double? = 0.0,
+
+    @Parsed var cableCarTime2: Double? = 0.0,
+    @Parsed var ferryTime2: Double? = 0.0,
+    @Parsed var gondolaTime2: Double? = 0.0,
+    @Parsed var funicularTime2: Double? = 0.0,
+    @Parsed var airplaneTime2: Double? = 0.0,
+    @Parsed var cableCarDistance2: Double? = 0.0,
+    @Parsed var ferryDistance2: Double? = 0.0,
+    @Parsed var gondolaDistance2: Double? = 0.0,
+    @Parsed var funicularDistance2: Double? = 0.0,
+    @Parsed var airplaneDistance2: Double? = 0.0,
+
+    @Parsed var cableCarTime3: Double? = 0.0,
+    @Parsed var ferryTime3: Double? = 0.0,
+    @Parsed var gondolaTime3: Double? = 0.0,
+    @Parsed var funicularTime3: Double? = 0.0,
+    @Parsed var airplaneTime3: Double? = 0.0,
     @Parsed var cableCarDistance3: Double? = 0.0,
     @Parsed var ferryDistance3: Double? = 0.0,
     @Parsed var gondolaDistance3: Double? = 0.0,
     @Parsed var funicularDistance3: Double? = 0.0,
-    @Parsed var airplaneDistance3: Double? = 0.0,
-
-    @Parsed var altitudeChange3: Double? = 0.0,
-    @Parsed var transfers3: Int? = 0,
-    @Parsed var Modes3: String? = ""
+    @Parsed var airplaneDistance3: Double? = 0.0
 )
