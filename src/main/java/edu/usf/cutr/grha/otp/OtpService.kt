@@ -1,5 +1,6 @@
 package edu.usf.cutr.grha.otp
 
+import edu.usf.cutr.grha.io.ChicagoTncWriter
 import edu.usf.cutr.grha.model.ChicagoTncData
 import edu.usf.cutr.grha.utils.GtfsUtils
 import edu.usf.cutr.otp.plan.api.PlanApi
@@ -22,6 +23,7 @@ class OtpService(
     }
 
     private fun getPlanData() {
+        val output = mutableListOf<ChicagoTncData>()
         runBlocking {
             chicagoTncData
                 .asFlow()
@@ -94,9 +96,11 @@ class OtpService(
                         // to remove extra commas
                         chicagoTnc.Modes3 = chicagoTnc.Modes3?.substring(0, chicagoTnc.Modes3?.length?.minus(2)!!)
                     }
+                    output.add(chicagoTnc)
 
-                    println(chicagoTnc)
                 }
+            val headers = ChicagoTncData::class.java.declaredFields.map { field -> field.name }
+            ChicagoTncWriter(output, headers).writeFile()
         }
     }
 
