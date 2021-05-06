@@ -46,6 +46,9 @@ class OtpService(
                             it.dropoffCentroidLatitude,
                             it.dropoffCentroidLongitude
                         )
+
+                        // time provided here is not associated to a particular timezone. The timezone is set
+                        // by the gtfs agency time zone set in the server.
                         val startDateTime = GtfsUtils.getDateFromTimeStamp(it.tripStartTimeStamp, "M/dd/yyyy H:mm")
                         val date = startDateTime.format(DateTimeFormatter.ofPattern("MM-dd-yyyy"))
                         val time = startDateTime.format(DateTimeFormatter.ofPattern("h:mma"))
