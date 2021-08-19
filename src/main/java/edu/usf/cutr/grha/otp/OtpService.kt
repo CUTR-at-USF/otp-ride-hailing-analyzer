@@ -49,7 +49,10 @@ class OtpService(
 
                         // time provided here is not associated to a particular timezone. The timezone is set
                         // by the gtfs agency time zone set in the server.
-                        val startDateTime = GtfsUtils.getDateFromTimeStamp(it.tripStartTimeStamp, "M/dd/yyyy H:mm")
+
+                        // val startDateTime = GtfsUtils.getDateFromTimeStamp(it.tripStartTimeStamp, "M/dd/yyyy H:mm") // Original time format in TNC data
+                        val startDateTime = GtfsUtils.getDateFromTimeStamp(it.tripStartTimeStamp, "yyyy-MM-dd'T'HH:mm:ss.SSS") // Processed time format from CalPoly
+
                         val date = startDateTime.format(DateTimeFormatter.ofPattern("MM-dd-yyyy"))
                         val time = startDateTime.format(DateTimeFormatter.ofPattern("h:mma"))
 
