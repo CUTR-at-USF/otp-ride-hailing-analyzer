@@ -16,7 +16,6 @@
 package edu.usf.cutr.grha.utils
 
 import edu.usf.cutr.grha.model.ChicagoTncData
-import edu.usf.cutr.grha.model.Location
 
 object IOUtils {
     @JvmStatic
@@ -27,32 +26,6 @@ object IOUtils {
                     d.dropoffCommunityArea + " " + d.fare + " " + d.tip + " " + d.additionalCharges + " " + d.tripTotal + " " +
                     d.sharedTripAuthorized + " " + d.tripsPooled + " " + d.pickupCentroidLatitude + " " +
                     d.pickupCentroidLongitude + " " + d.dropoffCentroidLatitude + " " + d.dropoffCentroidLongitude)
-        }
-    }
-
-    @JvmStatic
-    fun toLocations(rows: List<Array<String>>): List<Location> {
-        val locationFixList: MutableList<Location> = mutableListOf()
-        rows.forEach {
-            if (it.size == 8) {
-                val locationFixData = Location(
-                        it[1], it[2].toDouble(), it[3].toDouble(), it[4].toDouble(),
-                        it[5].toDouble(), it[6].toDouble(), it[7].toLong()
-                )
-                locationFixList.add(locationFixData)
-            }
-        }
-        return locationFixList
-    }
-
-    @JvmStatic
-    fun printLocations(data: List<Location>) {
-        for (d in data) {
-            println(
-                    d.provider + " " + d.latitude + " " +
-                            d.longitude + " " + d.accuracy + " " + d.speed + " " +
-                            d.altitude + " " + d.timeInMs
-            )
         }
     }
 }
