@@ -41,7 +41,6 @@ public class ProcessorMain {
             // Create output folder if it doesn't exist
             new File("output").mkdirs();
 
-
             int numConcurrentRequests = 10;
             if (args.length > 1) {
                 numConcurrentRequests = Integer.parseInt(args[1]);
