@@ -22,6 +22,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.List;
 
+/**
+ * Writes a list of Chicago TNC Data objects to a file
+ */
 public class ChicagoTncWriter extends CsvWriter {
     public List<ChicagoTncData> chicagoTncData;
     public List<String> headers;

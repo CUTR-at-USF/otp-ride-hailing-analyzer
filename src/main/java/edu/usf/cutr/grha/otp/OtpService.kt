@@ -1,6 +1,6 @@
 package edu.usf.cutr.grha.otp
 
-import edu.usf.cutr.grha.io.ChicagoTncWriter
+import edu.usf.cutr.grha.io.ChicagoTncStreamWriter
 import edu.usf.cutr.grha.model.ChicagoTncData
 import edu.usf.cutr.grha.utils.GtfsUtils
 import edu.usf.cutr.otp.plan.api.PlanApi
@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resumeWithException
 
 class OtpService(
@@ -23,7 +24,8 @@ class OtpService(
     }
 
     private fun getPlanData(concurrency: Int) {
-        val output = mutableListOf<ChicagoTncData>()
+        val headers = ChicagoTncData::class.java.declaredFields.map { field -> field.name }
+        val writer = ChicagoTncStreamWriter(headers)
         // val dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
         runBlocking {
             chicagoTncData
@@ -66,7 +68,12 @@ class OtpService(
                             date = date.toString(), time = time.toString()
                         )
                         val planApi = PlanApi(url, requestParameters)
-                        emit(makePlanRequest(planApi, chicagoTncData.indexOf(it)))
+                        planApi.requestTimeOutMillis(TimeUnit.SECONDS.toMillis(30))
+                        try {
+                            emit(makePlanRequest(planApi, chicagoTncData.indexOf(it)))
+                        } catch (e: Exception) {
+                            System.err.println(it.tripId + " " + e)
+                        }
                     }
                 }
                 .collect {
@@ -108,11 +115,9 @@ class OtpService(
                         // to remove extra commas
                         chicagoTnc.Modes3 = chicagoTnc.Modes3?.substring(0, chicagoTnc.Modes3?.length?.minus(2)!!)
                     }
-                    output.add(chicagoTnc)
-
+                    writer.add(chicagoTnc)
                 }
-            val headers = ChicagoTncData::class.java.declaredFields.map { field -> field.name }
-            ChicagoTncWriter(output, headers).writeFile()
+            writer.close()
         }
     }
 
