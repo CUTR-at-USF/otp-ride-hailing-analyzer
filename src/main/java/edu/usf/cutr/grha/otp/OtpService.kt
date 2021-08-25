@@ -68,7 +68,11 @@ class OtpService(
                             date = date.toString(), time = time.toString()
                         )
                         val planApi = PlanApi(url, requestParameters)
-                        planApi.requestTimeOutMillis(TimeUnit.SECONDS.toMillis(30))
+                        val timeout = TimeUnit.SECONDS.toMillis(30)
+                        planApi.requestTimeOutMillis(timeout)
+                        planApi.socketTimeOutMillis(timeout)
+
+                        System.out.println(it.tripId)
                         try {
                             emit(makePlanRequest(planApi, chicagoTncData.indexOf(it)))
                         } catch (e: Exception) {
