@@ -7,6 +7,7 @@ import edu.usf.cutr.otp.plan.api.PlanApi
 import edu.usf.cutr.otp.plan.model.Planner
 import edu.usf.cutr.otp.plan.model.RequestParameters
 import edu.usf.cutr.otp.plan.model.core.TraverseModes
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -72,7 +73,7 @@ class OtpService(
                         planApi.requestTimeOutMillis(timeout)
                         planApi.socketTimeOutMillis(timeout)
 
-                        System.out.println(it.tripId)
+                        System.out.println(it.tripId + " " + url)
                         try {
                             emit(makePlanRequest(planApi, chicagoTncData.indexOf(it)))
                         } catch (e: Exception) {
@@ -125,6 +126,7 @@ class OtpService(
         }
     }
 
+    @ExperimentalCoroutinesApi
     private suspend fun makePlanRequest(planApi: PlanApi, i: Int): Planner = suspendCancellableCoroutine { cont ->
         planApi.getPlan({
             it.additionalProperties["Index"] = i
