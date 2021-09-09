@@ -123,7 +123,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <kotlin.version>1.5.21</kotlin.version>
+        <kotlin.version>1.5.30</kotlin.version>
     </properties>
     <repositories>
         <repository>
@@ -168,7 +168,7 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
-            <version>1.4.10</version>
+            <version>1.4.32</version>
             <scope>compile</scope>
         </dependency>
         <!-- Core GTFS Library -->

@@ -8,9 +8,11 @@ import edu.usf.cutr.otp.plan.model.Planner
 import edu.usf.cutr.otp.plan.model.RequestParameters
 import edu.usf.cutr.otp.plan.model.core.TraverseModes
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.io.IOException
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resumeWithException
@@ -24,10 +26,16 @@ class OtpService(
         getPlanData(concurrency)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun getPlanData(concurrency: Int) {
         val headers = ChicagoTncData::class.java.declaredFields.map { field -> field.name }
         val writer = ChicagoTncStreamWriter(headers)
+
+        // Retry parameters
+        val delayFactor = 2
+        var currentDelay = 1000L
         // val dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
+
         runBlocking {
             chicagoTncData
                 .asFlow()
@@ -72,27 +80,38 @@ class OtpService(
                         val timeout = TimeUnit.SECONDS.toMillis(30)
                         planApi.requestTimeOutMillis(timeout)
                         planApi.socketTimeOutMillis(timeout)
+                        planApi.debug(true)
 
-                        System.out.println(it.tripId + " " + url)
+                        System.out.println(it.tripId)
                         try {
                             emit(makePlanRequest(planApi, chicagoTncData.indexOf(it)))
                         } catch (e: Exception) {
                             System.err.println(it.tripId + " " + e)
                         }
+                    }.retry(retries = 3) { cause ->
+                        if (cause is IOException || cause is NullPointerException) {
+                            System.err.println("IOE or NPE - retrying in " + TimeUnit.MILLISECONDS.toSeconds(currentDelay) + "sec")
+                            delay(currentDelay)
+                            currentDelay = (currentDelay * delayFactor)
+                            return@retry true
+                        } else {
+                            return@retry false
+                        }
                     }
                 }
                 .collect {
-                    var chicagoTnc = chicagoTncData[it.additionalProperties["Index"] as Int]
+                    val chicagoTnc = chicagoTncData[it.additionalProperties["Index"] as Int]
 
                     // get total travel time and distance from Itinerary
-                    val itineraries = it.plan?.itineraries
-                    if (itineraries?.size!! > 0) {
+                    val itineraries = it.plan?.itineraries ?: return@collect
+
+                    if (itineraries.isNotEmpty()) {
                         chicagoTnc.totalTravelTime1 = it.plan?.itineraries?.get(0)?.duration
                         chicagoTnc.totalDistance1 = calculateTotalDistance(it, 0)
                         chicagoTnc.totalWaitTime1 = it.plan?.itineraries?.get(0)?.waitingTime
                         chicagoTnc.altitudeChange1 = getAltitudeChange(it, 0)
                         chicagoTnc.transfers1 = it.plan?.itineraries?.get(0)?.transfers
-                        chicagoTnc = fillTimeAndDistanceInformationForModes(chicagoTnc, it, 0)
+                        fillTimeAndDistanceInformationForModes(chicagoTnc, it, 0)
 
                         // to remove extra commas
                         chicagoTnc.Modes1 = chicagoTnc.Modes1?.substring(0, chicagoTnc.Modes1?.length?.minus(2)!!)
@@ -103,7 +122,7 @@ class OtpService(
                         chicagoTnc.totalWaitTime2 = it.plan?.itineraries?.get(1)?.waitingTime
                         chicagoTnc.altitudeChange2 = getAltitudeChange(it, 1)
                         chicagoTnc.transfers2 = it.plan?.itineraries?.get(1)?.transfers
-                        chicagoTnc = fillTimeAndDistanceInformationForModes(chicagoTnc, it, 1)
+                        fillTimeAndDistanceInformationForModes(chicagoTnc, it, 1)
 
                         // to remove extra commas
                         chicagoTnc.Modes2 = chicagoTnc.Modes2?.substring(0, chicagoTnc.Modes2?.length?.minus(2)!!)
@@ -115,7 +134,7 @@ class OtpService(
                         chicagoTnc.totalWaitTime3 = it.plan?.itineraries?.get(2)?.waitingTime
                         chicagoTnc.altitudeChange3 = getAltitudeChange(it, 2)
                         chicagoTnc.transfers3 = it.plan?.itineraries?.get(2)?.transfers
-                        chicagoTnc = fillTimeAndDistanceInformationForModes(chicagoTnc, it, 2)
+                        fillTimeAndDistanceInformationForModes(chicagoTnc, it, 2)
 
                         // to remove extra commas
                         chicagoTnc.Modes3 = chicagoTnc.Modes3?.substring(0, chicagoTnc.Modes3?.length?.minus(2)!!)
@@ -166,7 +185,7 @@ class OtpService(
         chicagoTncData: ChicagoTncData,
         planner: Planner,
         index: Int
-    ): ChicagoTncData {
+    ) {
 
         val legs = planner.plan?.itineraries?.get(index)?.legs
         legs?.forEach {
@@ -465,6 +484,5 @@ class OtpService(
 
             }
         }
-        return chicagoTncData
     }
 }
