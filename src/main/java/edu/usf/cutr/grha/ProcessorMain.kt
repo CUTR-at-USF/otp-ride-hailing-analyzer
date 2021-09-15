@@ -50,7 +50,7 @@ object ProcessorMain {
             OtpService(chicagoTncDataList, "http://localhost:8080/otp/routers/default/plan", outputFile).call(
                 numConcurrentRequests
             )
-            println("Done! Please checking the $outputFile folder for the dataset with additional columns describing scheduled transit trips.")
+            println("Done! Please checking the $outputFile file for the dataset with additional columns describing scheduled transit trips.")
         } catch (fileNotFoundException: FileNotFoundException) {
             println("Chicago Data file not found. Please check the path")
         }

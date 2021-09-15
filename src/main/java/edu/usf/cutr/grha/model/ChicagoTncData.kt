@@ -171,5 +171,9 @@ data class ChicagoTncData
     @Parsed var ferryDistance3: Double? = 0.0,
     @Parsed var gondolaDistance3: Double? = 0.0,
     @Parsed var funicularDistance3: Double? = 0.0,
-    @Parsed var airplaneDistance3: Double? = 0.0
-)
+    @Parsed var airplaneDistance3: Double? = 0.0,
+) {
+    @Parsed
+    var googleTransitUrl = ""
+        get() = "https://www.google.com/maps/dir/?api=1&origin=$pickupCentroidLatitude,$pickupCentroidLongitude&destination=$dropoffCentroidLatitude,$dropoffCentroidLongitude&travelmode=transit"
+}
