@@ -1,6 +1,7 @@
 package edu.usf.cutr.grha.otp
 
 import edu.usf.cutr.grha.io.ChicagoTncStreamWriter
+import edu.usf.cutr.grha.io.ChicagoTncStreamWriter.Companion.DEFAULT_OUTPUT
 import edu.usf.cutr.grha.model.ChicagoTncData
 import edu.usf.cutr.grha.utils.GtfsUtils
 import edu.usf.cutr.otp.plan.api.PlanApi
@@ -19,7 +20,8 @@ import kotlin.coroutines.resumeWithException
 
 class OtpService(
     private var chicagoTncData: List<ChicagoTncData>,
-    private var url: String
+    private var url: String,
+    private var outputFile: String = DEFAULT_OUTPUT
 ) {
 
     fun call(concurrency: Int = 10) {
@@ -29,7 +31,7 @@ class OtpService(
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun getPlanData(concurrency: Int) {
         val headers = ChicagoTncData::class.java.declaredFields.map { field -> field.name }
-        val writer = ChicagoTncStreamWriter(headers)
+        val writer = ChicagoTncStreamWriter(headers, outputFile)
 
         // Retry parameters
         val delayFactor = 2

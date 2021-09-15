@@ -24,20 +24,22 @@ installing the software, follow the steps to run the OTP server:
 ## Build
 
 To build the application use `mvn clean package` command. This command will create a jar file (i.e., 
-gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar) under the target folder.
+`gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar`) under the target folder.
 
 ## Run
 
-The first command-line parameter should be the filename of the Chicago dataset, 2nd parameter should be the number of 
-requests to the OTP server you'd like to process concurrently (Optional).
+Command line parameters:
+1. Filename of the input Chicago TNC dataset
+2. Number of requests to the OTP server you'd like to process concurrently (Optional) (Default = `10`)
+3. File output name (Optional) (Default = `output.csv`)
 
 For example:
 
 ```
-java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar path/to/file/filename2.csv export/to/folder(Optional) 10(Optional)
+java -jar target/gnss-ride-hailing-analyzer-1.0.0-SNAPSHOT.jar path/to/file/filename2.csv 10 "output1.csv"
 ```
 
-An `output.csv` file will be generated in the project root, which will be the input file with additional columns added that describe the scheduled transit trips that could have been taken at the same departure time using the same origin and destination.
+An `output1.csv` file will be generated in the project root, which will be the input file with additional columns added that describe the scheduled transit trips that could have been taken at the same departure time using the same origin and destination as the TNC trips.
 
 ## License
 ```

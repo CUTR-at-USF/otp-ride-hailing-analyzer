@@ -13,47 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.usf.cutr.grha.io;
+package edu.usf.cutr.grha.io
 
-import com.univocity.parsers.common.processor.BeanWriterProcessor;
-import com.univocity.parsers.csv.CsvWriterSettings;
-import edu.usf.cutr.grha.model.ChicagoTncData;
-
-import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.List;
+import com.univocity.parsers.common.processor.BeanWriterProcessor
+import com.univocity.parsers.csv.CsvWriterSettings
+import edu.usf.cutr.grha.model.ChicagoTncData
+import java.io.BufferedOutputStream
+import java.io.FileOutputStream
 
 /**
  * Writes a series of Chicago TNC Data objects to a file one-by-one
  */
-public class ChicagoTncStreamWriter extends CsvWriter {
-    com.univocity.parsers.csv.CsvWriter uniWriter;
-    int counter = 0;
+class ChicagoTncStreamWriter(headers: List<String>, outputFile: String = DEFAULT_OUTPUT) : CsvWriter() {
+    var uniWriter: com.univocity.parsers.csv.CsvWriter
+    var counter = 0
 
-    public ChicagoTncStreamWriter(List<String> headers) throws FileNotFoundException {
-        BeanWriterProcessor<ChicagoTncData> beanWriterProcessor =
-                new BeanWriterProcessor<>(ChicagoTncData.class);
-
-        CsvWriterSettings csvWriterSettings = new CsvWriterSettings();
-        csvWriterSettings.setRowWriterProcessor(beanWriterProcessor);
-        csvWriterSettings.setHeaders(headers.toArray(new String[headers.size()]));
-
-        uniWriter = new com.univocity.parsers.csv.CsvWriter(new BufferedOutputStream(
-                new FileOutputStream("output.csv")), csvWriterSettings);
-        uniWriter.writeHeaders();
-    }
-
-    synchronized public void add(ChicagoTncData chicagoTncData) {
-        uniWriter.processRecord(chicagoTncData);
-        counter++;
+    @Synchronized
+    fun add(chicagoTncData: ChicagoTncData?) {
+        uniWriter.processRecord(chicagoTncData)
+        counter++
         if (counter % 1000 == 0) {
-            uniWriter.flush();
+            uniWriter.flush()
         }
     }
 
-    synchronized public void close() {
-        uniWriter.flush();
-        uniWriter.close();
+    @Synchronized
+    fun close() {
+        uniWriter.flush()
+        uniWriter.close()
+    }
+
+    init {
+        val beanWriterProcessor = BeanWriterProcessor(
+            ChicagoTncData::class.java
+        )
+        val csvWriterSettings = CsvWriterSettings()
+        csvWriterSettings.rowWriterProcessor = beanWriterProcessor
+        csvWriterSettings.setHeaders(*headers.toTypedArray())
+        uniWriter = com.univocity.parsers.csv.CsvWriter(
+            BufferedOutputStream(
+                FileOutputStream(outputFile)
+            ), csvWriterSettings
+        )
+        uniWriter.writeHeaders()
+    }
+
+    companion object {
+        const val DEFAULT_OUTPUT = "output.csv"
     }
 }
