@@ -76,15 +76,17 @@ class OtpService(
 
                         val requestParameters = RequestParameters(
                             fromPlace = origin, toPlace = destination,
-                            date = date.toString(), time = time.toString()
+                            date = date.toString(), time = time.toString(),
+                            traverseModes = TraverseModes.TRANSIT
                         )
                         val planApi = PlanApi(url, requestParameters)
                         val timeout = TimeUnit.SECONDS.toMillis(30)
                         planApi.requestTimeOutMillis(timeout)
                         planApi.socketTimeOutMillis(timeout)
-                        planApi.debug(true)
+                        //planApi.debug(true)
+                        //planApi.ignoreUnknownKeys(false)
 
-                        System.out.println(it.tripId)
+                        println(it.tripId)
                         try {
                             emit(makePlanRequest(planApi, chicagoTncData.indexOf(it)))
                         } catch (e: Exception) {
@@ -108,10 +110,10 @@ class OtpService(
                     val itineraries = it.plan?.itineraries ?: return@collect
 
                     if (itineraries.isNotEmpty()) {
-                        chicagoTnc.totalTravelTime1 = it.plan?.itineraries?.get(0)?.duration
-                        chicagoTnc.totalDistance1 = calculateTotalDistance(it, 0)
-                        chicagoTnc.totalWaitTime1 = it.plan?.itineraries?.get(0)?.waitingTime
-                        chicagoTnc.altitudeChange1 = getAltitudeChange(it, 0)
+                        chicagoTnc.totalTravelTimeSec1 = it.plan?.itineraries?.get(0)?.duration
+                        chicagoTnc.totalDistanceMeters1 = calculateTotalDistance(it, 0)
+                        chicagoTnc.totalWaitTimeSec1 = it.plan?.itineraries?.get(0)?.waitingTime
+                        chicagoTnc.altitudeChangeMeters1 = getAltitudeChange(it, 0)
                         chicagoTnc.transfers1 = it.plan?.itineraries?.get(0)?.transfers
                         fillTimeAndDistanceInformationForModes(chicagoTnc, it, 0)
 

@@ -41,10 +41,10 @@ data class ChicagoTncData
 
     @Parsed var optimizeType: String? = null,
 
-    @Parsed var totalTravelTime1: Int? = 0,
-    @Parsed var totalDistance1: Double? = 0.0,
-    @Parsed var totalWaitTime1: Int? = 0,
-    @Parsed var altitudeChange1: Double? = 0.0,
+    @Parsed var totalTravelTimeSec1: Int? = 0,
+    @Parsed var totalDistanceMeters1: Double? = 0.0,
+    @Parsed var totalWaitTimeSec1: Int? = 0,
+    @Parsed var altitudeChangeMeters1: Double? = 0.0,
     @Parsed var transfers1: Int? = 0,
     @Parsed var Modes1: String? = "",
 
