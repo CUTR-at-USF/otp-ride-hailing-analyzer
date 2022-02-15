@@ -1,4 +1,4 @@
-# GNSS Ride Hailing Analyser [![Java CI with Maven](https://github.com/CUTR-at-USF/gnss-ride-hailing-analyzer/actions/workflows/maven.yml/badge.svg)](https://github.com/CUTR-at-USF/gnss-ride-hailing-analyzer/actions/workflows/maven.yml)
+# OpenTripPlanner (OTP) Ride Hailing Analyser [![Java CI with Maven](https://github.com/CUTR-at-USF/gnss-ride-hailing-analyzer/actions/workflows/maven.yml/badge.svg)](https://github.com/CUTR-at-USF/gnss-ride-hailing-analyzer/actions/workflows/maven.yml)
 
 Java Application for calculating scheduled transit trips that have the same departure time, origin, and destination as a given dataset of TNC trips.
 
